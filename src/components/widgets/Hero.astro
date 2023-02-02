@@ -1,48 +1,65 @@
 ---
 import { Picture } from '@astrojs/image/components'
 ---
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .btn {
+        transition: all 0.5s ease-in-out;
+      }
+
+      .btn:hover {
+        transform: translateY(-10px);
+      }
+	  html {
+  scroll-behavior: smooth;
+}
+
+    </style>
+  </head>
+ 	 							<body>
 
 <section class="relative md:-mt-[76px]">
 	<div class="max-w-6xl mx-auto px-4 sm:px-6" id="hero">
 		<div class="py-12 md:py-20">
 			<div class="text-center pb-10 md:pb-16 max-w-5xl mx-auto">
 				<h1 class="text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-6 font-heading">
-					genznodes ⚛					
+					Indonode Staking Service					
 				</h1>
 				<div class="max-w-2xl mx-auto">
 					<p class="text-xl text-gray-600 mb-2 dark:text-slate-400">
-						IBC Relayer & Staking Service Provider with 24/7 monitoring						
+						IBC Relayer & Professional PoS Network Validator					
 					</p>
 					<p class="text-xl font-bold text-gray-600 mb-2 dark:text-slate-400">
-						Stake and Earn Your Rewards	💸			
+						Stake and Take your rewards	
 					</p>
 					<p class="text-xl text-gray-600 mb-8 dark:text-slate-400">
-						we also support early launch of dapps , marketplaces and others . has experience in testing dapps in the past						
+						Low Fees , Highly Secured , And 24/7 Monitored					
 					</p>
 					<div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4">
-						<!-- <div class="flex w-full sm:w-auto">
-							<a
-								class="btn btn-primary sm:mb-0 w-full"
-								href="https://github.com/onwidget/astrowind"
-								target="_blank"
-								rel="noopener"
-							>
-								<Icon name="tabler:download" class="w-5 h-5 mr-1 -ml-1.5" /> Get template
-							</a>
-						</div> -->
 						<div class="flex w-full sm:w-auto">
 							<a
 								class="btn w-full"
-								href="#features">Learn more</a
+								href="#features">About us</a
 							>
 						</div>
+						<script>
+							document.querySelector('.btn').addEventListener('click', function(event) {
+							  event.preventDefault();
+							  document.querySelector('#features').scrollIntoView({ 
+								behavior: 'smooth' 
+							  });
+							});
+						  </script>
+					</body>
 					</div>
 				</div>
 			</div>
 			<div>
 				<div class="relative m-auto max-w-4xl">
 					<Picture
-						src={import('~/assets/images/staking.png')}
+						src={import('~/assets/images/miring.png')}
 						class="mx-auto rounded-md w-full"
 						widths={[400, 768, 1480, 3124]}
 						sizes="(max-width: 3124px) 886px, (max-width: 1479px) 768px, 1480px"
@@ -57,3 +74,4 @@ import { Picture } from '@astrojs/image/components'
 		</div>
 	</div>
 </section>
+</html>

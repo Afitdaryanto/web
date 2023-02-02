@@ -1,11 +1,13 @@
 ---
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
+network: Mainnet
 icon: planq
 chain: planq_7070-2
 version: v1.0.3
 ---
-## Hardware requirements
+
+### Hardware requirements
 
 The following requirements are recommended for running planq:
 
@@ -14,35 +16,20 @@ The following requirements are recommended for running planq:
 - At least 32GB of memory (RAM)
 - At least 100mbps network bandwidth
 
-## setting vars
 
-`<YOUR_MONIKER>` change with your moniker / name of your validator in explorer
-
-```
-NODENAME=<YOUR_MONIKER>
-```
-
-save and import variable
-
-```
-echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
-if [ ! $WALLET ]; then
-	echo "export WALLET=wallet" >> $HOME/.bash_profile
-fi
-echo "export PLANQ_CHAIN_ID=planq_7070-2" >> $HOME/.bash_profile
-source $HOME/.bash_profile
-```
-
-## Install dependences
+### Install dependencies Required
 
 ```
 sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
 
-## Install go
+### Install go
+
+We are gonna use GO Version 1.19.5
+If you already have GO installed you can skip this 
 
 ```
-ver="1.19"
+ver="1.19.5"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -53,7 +40,7 @@ source ~/.bash_profile
 go version
 ```
 
-## Install binary
+### Install binary
 
 ```
 git clone https://github.com/planq-network/planq.git
@@ -69,35 +56,37 @@ Verify that you've installed planq successfully
 planqd version
 ```
 
-## Config app
+### Config app
 
 ```
 planqd config chain-id planq_7070-2
 planqd config keyring-backend file
 ```
 
-## Initialize Node
+### Initialize Node
+
+Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-planqd init $NODENAME --chain-id $PLANQ_CHAIN_ID
+planqd init <YOUR_MONIKER> --chain-id planq_7070-2
 ```
 
-## Get genesis and addrbook
+### Download Genesis file and addrbook
 
-- genesis
+- Genesis
 
 ```
 wget https://raw.githubusercontent.com/planq-network/networks/main/mainnet/genesis.json
 mv genesis.json ~/.planqd/config/
 ```
 
-- addrbook
+- Addrbook
 
 ```
-NA
+
 ```
 
-## Set peers and seeds
+### Configure Seeds and Peers
 
 ```
 SEEDS=`curl -sL https://raw.githubusercontent.com/planq-network/networks/main/mainnet/seeds.txt | awk '{print $1}' | paste -s -d, -`
@@ -106,12 +95,12 @@ PEERS=`curl -sL https://raw.githubusercontent.com/planq-network/networks/main/ma
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.planqd/config/config.toml
 ```
 
-## config pruning
+### config pruning
 
 ```
 PRUNING="custom"
 PRUNING_KEEP_RECENT="1000"
-PRUNING_INTERVAL="10"
+PRUNING_INTERVAL="19"
 
 sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.planqd/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
@@ -120,16 +109,7 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
 \"$PRUNING_INTERVAL\"/" $HOME/.planqd/config/app.toml
 ```
 
-## set timeout
-
-```
-TIMEOUT=1s
-
-sed -i -e "s/^timeout_commit *=.*/timeout_commit = \
-\"$TIMEOUT\"/" $HOME/.planqd/config/config.toml
-```
-
-## set inbound and out peers
+### Set allowed inbound and outbound peers (Optional)
 
 ```
 INBOUND=120
@@ -141,9 +121,11 @@ sed -i -e "s/^max_num_outbound_peers *=.*/max_num_outbound_peers = \
 \"$OUTBOUND\"/" $HOME/.planqd/config/config.toml
 ```
 
-## create service file and start node
+### create service file and start node
 
-- create
+Create service file
+Create a `planq.service` file in the `/etc/systemd/system` folder with the following code. 
+You can `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
 sudo tee /etc/systemd/system/planqd.service > /dev/null <<EOF

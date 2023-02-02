@@ -4,40 +4,37 @@ import { getHomePermalink } from '~/utils/permalinks';
 
 const links = [
 	{
-		title: 'Tools',
+		title: '',
 		items: [			
-			{ title: 'Explorer', href: 'https://explorer.genznodes.dev' }, 
-			{ title: 'Testnet - Explorer', href: 'https://testnet-explorer.genznodes.dev' }, 
+			{ title: 'Explorer', href: 'https://explorer.indonode.dev/' }, 
+			{ title: 'Snapshot', href: '#' },
 			{ title: 'StateSync', href: '#' },
-			{ title: 'gRPC', href: '#' },
-			{ title: 'API', href: '#' },
-			{ title: 'RPC', href: '#' },
+			{ title: 'Addrbook', href: '#' },
+			{ title: 'Genesis File', href: '#' },
 		],
 	},
 	{
-		title: 'Services',
+		title: '',
 		items: [
-			{ title: 'Mainnet', href: 'https://genznodes.dev/#features2' },
-			{ title: 'Testnet', href: 'https://genznodes.dev/testnet' },
-			{ title: 'Archive - project', href: 'https://genznodes.dev/archive' },
-			{ title: 'IBC Relayer', href: 'https://genznodes.dev/relayer' },
+			{ title: 'Public API', href: 'https://indonode.dev/#features2' },
+			{ title: 'Public RPC', href: 'https://indonode.dev/' },
+			{ title: 'Testnet Labs', href: 'https://indonode.dev/testnet' },
+			{ title: 'IBC Relayer', href: 'https://indonode.dev/relayer' },
 		],
 	},
 	{
-		title: 'Community Contribution',
+		title: '',
 		items: [
-			{ title: 'Ambassadors', href: '#' },
-			{ title: 'Communnity - moderator', href: '#' },
-			{ title: 'Discord manage', href: '#' },
-			{ title: 'Set up Guide', href: '#' },			
+			{ title: 'About Us', href: '#' },
+			{ title: 'Sitemap', href: '#' },	
 		],
 	},
 ];
 
 const social = [
-	{ label: 'Twitter', icon: 'tabler:brand-twitter', href: 'https://twitter.com/genznodes' },
-	{ label: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/Genz22' },
-	{ label: 'Mail', icon: 'tabler:mail', href: 'mailto:genznodes@gmail.com' },
+	{ label: 'Twitter', icon: 'tabler:brand-twitter', href: 'https://twitter.com/indonodev' },
+	{ label: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/elangrr' },
+	{ label: 'Mail', icon: 'tabler:mail', href: 'mailto:elang.209@gmail.com' },
 ];
 ---
 
@@ -46,15 +43,15 @@ const social = [
 		<div class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12">
 			<div class="col-span-12 lg:col-span-4">
 				<div class="mb-2">
-					<a class="inline-block font-bold text-xl" href={getHomePermalink()}>genznodes</a>
+					<a class="inline-block font-bold text-xl" href={getHomePermalink()}>Indonode</a>
 				</div>
-				<div class="text-sm text-gray-600">
+				<div class="text-sm text-black">
 					<a
-						class="text-gray-600 hover:text-gray-700 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
+						class="text-black hover:text-green-700 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
 						href="#">Terms</a
 					> ·
 					<a
-						class="text-gray-600 hover:text-gray-700 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
+						class="text-black hover:text-green-700 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
 						href="#">Privacy Policy</a
 					>
 				</div>
@@ -68,7 +65,7 @@ const social = [
 								{items.map(({ title, href }) => (
 									<li class="mb-2">
 										<a
-											class="text-gray-600 hover:text-gray-700 hover:underline dark:text-gray-400 transition duration-150 ease-in-out"
+											class="text-gray-600 hover:text-green-700 hover:underline dark:text-gray-400 transition duration-150 ease-in-out"
 											href={href}
 										>
 											{title}
@@ -103,7 +100,7 @@ const social = [
 					class="w-5 h-5 md:w-6 md:h-6 md:-mt-0.5 bg-cover mr-1.5 float-left rounded-sm bg-[url()]"
 				>
 				</span>
-				Made by <a class="text-blue-600 hover:underline dark:text-gray-200" href="#"> genznodes</a> ·
+				Made by <a class="text-green-600 hover:underline dark:text-gray-200" href="#"> Indonode</a> ·
 				All rights reserved.
 			</div>
 		</div>

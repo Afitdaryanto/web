@@ -1,15 +1,15 @@
 import defaultImage from './assets/images/default.png';
 
 const CONFIG = {
-  name: 'genznodes',
+  name: 'indonode',
 
-  origin: 'https://genznodes.dev',
+  origin: 'https://indonode.dev/',
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'genznodes - staking service provider',
+  title: 'Indonode - Highly Secured Staking Provider',
   description:
-    '🚀 Relayer and Staking Service Provider for Cosmos Ecosystem',
+    'Validator & Node Operator Cosmos Networks',
   defaultImage: defaultImage,
 
   defaultTheme: 'system', // Values: "system" | "light" | "dark" | "light:only" | "dark:only"

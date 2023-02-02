@@ -7,7 +7,7 @@ version: v1.0.3
 ---
 ### Setup
 
-- snapshot-interval= 1000
+- snapshot-interval= 1500
 - snapshot-keep-recent = 5
 
 ### Intruction
@@ -16,13 +16,13 @@ version: v1.0.3
 systemctl stop planqd 
 planqd tendermint unsafe-reset-all --home $HOME/.planqd --keep-addr-book
 
-STATE_SYNC_RPC="https://planq-rpc.genznodes.dev:443"
+STATE_SYNC_RPC="https://rpc.planq.indonode.net:443"
 
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
-SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
+SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1500))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=2ce64749269f6bb15acaaa4abc0712f5e91ed588@82.208.20.91:27656 
+PEERS=446eee85d33ac0d6dacd030b7ecde20a95520bf5@95.216.114.212:14656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.planqd/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.planqd/config/config.toml

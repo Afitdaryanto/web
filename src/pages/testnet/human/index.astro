@@ -17,43 +17,43 @@ const meta = {
 const items = [
 	{
 		title: 'Addrbook',
-		Link: 'https://genznodes.dev/testnet/human/addrbook',
+		Link: 'https://indonode.net/testnet/human/addrbook',
 	},
 	{
 		title: 'Api',
-		Link: 'https://genznodes.dev/testnet/human/api',
+		Link: 'https://indonode.net/testnet/human/api',
 	},
 	{
 		title: 'Explorer',
-		Link: 'https://testnet-explorer.genznodes.dev/human',
+		Link: 'https://explorer.indonode.dev/testnet-1',
 	},
 	{
 		title: 'Genesis file',
-		Link: 'https://genznodes.dev/testnet/human/genesis',
+		Link: 'https://indonode.net/testnet/human/genesis',
 	},
 	{
 		title: 'gRPC',
-		Link: 'https://genznodes.dev/testnet/human/grpc',
+		Link: 'https://indonode.net/testnet/human/grpc',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://genznodes.dev/testnet/human/installation',
+		Link: 'https://indonode.net/testnet/human/installation',
 	},
 	{
 		title: 'Peers',
-		Link: 'https://genznodes.dev/testnet/human/peers',
+		Link: 'https://indonode.net/testnet/human/peers',
 	},
 	{
 		title: 'Rpc',
-		Link: 'https://genznodes.dev/testnet/human/rpc',
+		Link: 'https://indonode.net/testnet/human/rpc',
 	},
 	{
 		title: 'Statesync',
-		Link: 'https://genznodes.dev/testnet/human/statesync',
+		Link: 'https://indonode.net/testnet/human/statesync',
 	},
 	{
 		title: 'Snapshot',
-		Link: 'https://genznodes.dev/testnet/human/snapshot',
+		Link: 'https://indonode.net/testnet/human/snapshot',
 	},	
 ]	
 ---
@@ -67,9 +67,15 @@ const items = [
 					<h1 class="text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-4 font-heading">
 						Service {name}
 					</h1>
+					<a
+							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
+							href={stake}>Stake with us</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
-					<div class=" bg-blue-300 px-4 sm:px-6 py-4 text-md text-center font-medium">
+					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
+							<li>
+								<span class="font-bold">Network Type:</span> {network}							
+							</li>
 							<li>
 								<span class="font-bold">Chain-id:</span> {chain}							
 							</li>
@@ -94,4 +100,4 @@ const items = [
 			</div>
 		</div>
 	</section>
-</Layout>
+	</Layout>

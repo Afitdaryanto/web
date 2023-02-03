@@ -17,43 +17,43 @@ const meta = {
 const items = [
 	{
 		title: 'Addrbook',
-		Link: 'https://genznodes.dev/testnet/lava/addrbook',
+		Link: 'https://indonode.net/testnet/lava/addrbook',
 	},
 	{
 		title: 'Api',
-		Link: 'https://genznodes.dev/testnet/lava/api',
+		Link: 'https://indonode.net/testnet/lava/api',
 	},
 	{
 		title: 'Explorer',
-		Link: 'https://testnet-explorer.genznodes.dev/lava',
+		Link: 'https://explorer.indonode.dev/lava',
 	},
 	{
 		title: 'Genesis file',
-		Link: 'https://genznodes.dev/testnet/lava/genesis',
+		Link: 'https://indonode.net/testnet/lava/genesis',
 	},
 	{
 		title: 'gRPC',
-		Link: 'https://genznodes.dev/testnet/lava/grpc',
+		Link: 'https://indonode.net/testnet/lava/grpc',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://genznodes.dev/testnet/lava/installation',
+		Link: 'https://indonode.net/testnet/lava/installation',
 	},
 	{
 		title: 'Peers',
-		Link: 'https://genznodes.dev/testnet/lava/peers',
+		Link: 'https://indonode.net/testnet/lava/peers',
 	},
 	{
 		title: 'Rpc',
-		Link: 'https://genznodes.dev/testnet/lava/rpc',
+		Link: 'https://indonode.net/testnet/lava/rpc',
 	},
 	{
 		title: 'Statesync',
-		Link: 'https://genznodes.dev/testnet/lava/statesync',
+		Link: 'https://indonode.net/testnet/lava/statesync',
 	},
 	{
 		title: 'Snapshot',
-		Link: 'https://genznodes.dev/testnet/lava/snapshot',
+		Link: 'https://indonode.net/testnet/lava/snapshot',
 	},	
 ]	
 ---
@@ -67,9 +67,15 @@ const items = [
 					<h1 class="text-5xl md:text-[3.50rem] font-bold leading-tighter tracking-tighter mb-4 font-heading">
 						Service {name}
 					</h1>
+					<a
+							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
+							href={stake}>Stake with us</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
-					<div class=" bg-blue-300 px-4 sm:px-6 py-4 text-md text-center font-medium">
+					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
+							<li>
+								<span class="font-bold">Network Type:</span> {network}							
+							</li>
 							<li>
 								<span class="font-bold">Chain-id:</span> {chain}							
 							</li>
@@ -94,4 +100,4 @@ const items = [
 			</div>
 		</div>
 	</section>
-</Layout>
+	</Layout>

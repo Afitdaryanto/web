@@ -18,43 +18,43 @@ const meta = {
 const items = [
 	{
 		title: 'Addrbook',
-		Link: 'https://indonode.dev/mainnet/mars/addrbook',
+		Link: 'https://indonode.net/mainnet/mars/addrbook',
 	},
 	{
 		title: 'Api',
-		Link: 'https://indonode.dev/mainnet/mars/api',
+		Link: 'https://indonode.net/mainnet/mars/api',
 	},
 	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.dev/mars',
+		Link: 'https://explorer.indonode.net/mars',
 	},
 	{
 		title: 'Genesis file',
-		Link: 'https://indonode.dev/mainnet/mars/genesis',
+		Link: 'https://indonode.net/mainnet/mars/genesis',
 	},
 	{
 		title: 'gRPC',
-		Link: 'https://indonode.dev/mainnet/mars/grpc',
+		Link: 'https://indonode.net/mainnet/mars/grpc',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://indonode.dev/mainnet/mars/installation',
+		Link: 'https://indonode.net/mainnet/mars/installation',
 	},
 	{
 		title: 'Peers',
-		Link: 'https://indonode.dev/mainnet/mars/peers',
+		Link: 'https://indonode.net/mainnet/mars/peers',
 	},
 	{
 		title: 'Rpc',
-		Link: 'https://indonode.dev/mainnet/mars/rpc',
+		Link: 'https://indonode.net/mainnet/mars/rpc',
 	},
 	{
 		title: 'Statesync',
-		Link: 'https://indonode.dev/mainnet/mars/statesync',
+		Link: 'https://indonode.net/mainnet/mars/statesync',
 	},
 	{
 		title: 'Snapshot',
-		Link: 'https://indonode.dev/mainnet/mars/snapshot',
+		Link: 'https://indonode.net/mainnet/mars/snapshot',
 	},	
 ]	
 ---
@@ -69,11 +69,14 @@ const items = [
 						Service {name}
 					</h1>
 					<a
-							class="btn bg-blue-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
-							href={stake}>stake</a>
+							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
+							href={stake}>Stake with us</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
-					<div class=" bg-blue-300 px-4 sm:px-6 py-4 text-md text-center font-medium">
+					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
+							<li>
+								<span class="font-bold">Network Type:</span> {network}							
+							</li>
 							<li>
 								<span class="font-bold">Chain-id:</span> {chain}							
 							</li>

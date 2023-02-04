@@ -1,10 +1,10 @@
 ---
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
+icon: lambda
 network: Mainnet
-icon: planq
-chain: planq_7070-2
-version: v1.0.3
+chain: lambda_92000-1
+version: 1.0.0
 ---
 
 ### Hardware requirements
@@ -43,24 +43,22 @@ go version
 ### Install binary
 
 ```
-git clone https://github.com/planq-network/planq.git
-cd planq
-git fetch
-git checkout v1.0.3
+git clone https://github.com/LambdaIM/lambdavm.git
+cd lambdavm
 make install
 ```
 
 Verify that you've installed planq successfully
 
 ```
-planqd version
+lambdavm version
 ```
 
 ### Config app
 
 ```
-planqd config chain-id planq_7070-2
-planqd config keyring-backend file
+lambdavm config chain-id lambda_92000-1
+lambdavm config keyring-backend file
 ```
 
 ### Initialize Node
@@ -68,7 +66,7 @@ planqd config keyring-backend file
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-planqd init <YOUR_MONIKER> --chain-id planq_7070-2
+lambdavm init <YOUR_MONIKER> --chain-id lambda_92000-1
 ```
 
 ### Download Genesis file and addrbook
@@ -76,23 +74,24 @@ planqd init <YOUR_MONIKER> --chain-id planq_7070-2
 - Genesis
 
 ```
-wget https://raw.githubusercontent.com/planq-network/networks/main/mainnet/genesis.json
-mv genesis.json ~/.planqd/config/
+cd $HOME
+wget https://raw.githubusercontent.com/LambdaIM/mainnet/main/lambda_92000-1/genesis.json
+mv genesis.json ~/.lambdavm/config/
 ```
 
 - Addrbook
 
 ```
-
+wget -O $HOME/.lambdavm/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Lambda%20Network/addrbook.json"
 ```
 
 ### Configure Seeds and Peers
 
 ```
-SEEDS=`curl -sL https://raw.githubusercontent.com/planq-network/networks/main/mainnet/seeds.txt | awk '{print $1}' | paste -s -d, -`
-PEERS=`curl -sL https://raw.githubusercontent.com/planq-network/networks/main/mainnet/peers.txt | sort -R | head -n 10 | awk '{print $1}' | paste -s -d, -`
-
-sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.planqd/config/config.toml
+peers="2c4f8e193fd10ab3a2bc919b484fd1c78eceffb3@13.213.214.88:26656"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.lambdavm/config/config.toml
+seeds=""
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.lambdavm/config/config.toml
 ```
 
 ### config pruning
@@ -102,11 +101,11 @@ PRUNING="custom"
 PRUNING_KEEP_RECENT="1000"
 PRUNING_INTERVAL="19"
 
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.planqd/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.lambdavm/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.planqd/config/app.toml
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.lambdavm/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.planqd/config/app.toml
+\"$PRUNING_INTERVAL\"/" $HOME/.lambdavm/config/app.toml
 ```
 
 ### Set allowed inbound and outbound peers (Optional)
@@ -116,26 +115,26 @@ INBOUND=120
 OUTBOUND=60
 
 sed -i -e "s/^max_num_inbound_peers *=.*/max_num_inbound_peers = \
-\"$INBOUND\"/" $HOME/.planqd/config/config.toml
+\"$INBOUND\"/" $HOME/.lambdavm/config/config.toml
 sed -i -e "s/^max_num_outbound_peers *=.*/max_num_outbound_peers = \
-\"$OUTBOUND\"/" $HOME/.planqd/config/config.toml
+\"$OUTBOUND\"/" $HOME/.lambdavm/config/config.toml
 ```
 
 ### create service file and start node
 
 Create service file
-Create a `planq.service` file in the `/etc/systemd/system` folder with the following code. 
+Create a `lambdavm.service` file in the `/etc/systemd/system` folder with the following code. 
 You can change `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
-sudo tee /etc/systemd/system/planqd.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/lambdavm.service > /dev/null <<EOF
 [Unit]
-Description=planqd
+Description=lambdavm
 After=network-online.target
 
 [Service]
 User=root
-ExecStart=$(which planqd) start --home $HOME/.planqd
+ExecStart=$(which lambdavm) start --home $HOME/.lambdavm
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
@@ -149,7 +148,7 @@ EOF
 
 ```
 sudo systemctl daemon-reload
-sudo systemctl enable planqd
-sudo systemctl restart planqd
-sudo journalctl -fu planqd -o cat
+sudo systemctl enable lambdavm
+sudo systemctl restart lambdavm
+sudo journalctl -fu lambdavm -o cat
 ```

@@ -23,7 +23,7 @@ LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.heigh
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1500))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=446eee85d33ac0d6dacd030b7ecde20a95520bf5@95.216.114.212:14656 
+PEERS=29cb922989ff71864fda47e2ef19620f6b18a94d@95.216.114.212:14656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.planqd/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.planqd/config/config.toml

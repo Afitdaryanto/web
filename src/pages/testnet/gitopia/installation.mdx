@@ -59,18 +59,18 @@ make build
 Verify that you've installed gitopiad successfully
 
 ```
-dendfud version
+gitopiad version
 ```
 
 ### Prepare Cosmovisor
 ```
-mkdir -p $HOME/.defund/cosmovisor/genesis/bin
-mv build/gitopiad $HOME/.defund/cosmovisor/genesis/bin/
+mkdir -p $HOME/.gitopia/cosmovisor/genesis/bin
+mv build/gitopiad $HOME/.gitopia/cosmovisor/genesis/bin/
 rm -rf build
 
 
-sudo ln -s $HOME/.defund/cosmovisor/genesis $HOME/.defund/cosmovisor/current
-sudo ln -s $HOME/.defund/cosmovisor/current/bin/gitopiad /usr/local/bin/gitopiad
+sudo ln -s $HOME/.gitopia/cosmovisor/genesis $HOME/.gitopia/cosmovisor/current
+sudo ln -s $HOME/.gitopia/cosmovisor/current/bin/gitopiad /usr/local/bin/gitopiad
 ```
 
 ### Install Cosmovisor
@@ -121,11 +121,11 @@ PRUNING="custom"
 PRUNING_KEEP_RECENT="100"
 PRUNING_INTERVAL="19"
 
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.defund/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.gitopia/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.defund/config/app.toml
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.gitopia/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.defund/config/app.toml
+\"$PRUNING_INTERVAL\"/" $HOME/.gitopia/config/app.toml
 ```
 
 

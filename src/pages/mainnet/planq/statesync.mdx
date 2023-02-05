@@ -8,7 +8,7 @@ version: v1.0.3
 ### Setup
 This is the settings we use , you dont have to change anything
 
-- snapshot-interval= 1500
+- snapshot-interval= 1000
 - snapshot-keep-recent = 5
 
 ### Intruction
@@ -20,7 +20,7 @@ planqd tendermint unsafe-reset-all --home $HOME/.planqd --keep-addr-book
 STATE_SYNC_RPC="https://rpc.planq.indonode.net:443"
 
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
-SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1500))
+SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
 PEERS=29cb922989ff71864fda47e2ef19620f6b18a94d@95.216.114.212:14656 

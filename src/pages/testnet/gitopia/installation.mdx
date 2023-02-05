@@ -2,9 +2,9 @@
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
 network: Testnet
-icon: defund
-chain: defund-private-4
-version: v0.2.4
+icon: gitopia
+chain: gitopia-janus-testnet-2
+version: v1.2.0
 ---
 
 ### Hardware requirements
@@ -40,32 +40,37 @@ source ~/.bash_profile
 go version
 ```
 
+### Install Gitopia Helper
+```
+curl -Ls https://get.gitopia.com | sudo bash
+```
+
 ### Install binary
 
 ```
 cd $HOME
-rm -rf defund
-git clone https://github.com/defund-labs/defund.git
-cd defund
-git checkout v0.2.4
+rm -rf gitopia
+git clone gitopia://gitopia/gitopia
+cd gitopia
+git checkout v1.2.0
 make build
 ```
 
-Verify that you've installed Defundd successfully
+Verify that you've installed gitopiad successfully
 
 ```
-defundd version
+dendfud version
 ```
 
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.defund/cosmovisor/genesis/bin
-mv build/defundd $HOME/.defund/cosmovisor/genesis/bin/
+mv build/gitopiad $HOME/.defund/cosmovisor/genesis/bin/
 rm -rf build
 
 
 sudo ln -s $HOME/.defund/cosmovisor/genesis $HOME/.defund/cosmovisor/current
-sudo ln -s $HOME/.defund/cosmovisor/current/bin/defundd /usr/local/bin/defundd
+sudo ln -s $HOME/.defund/cosmovisor/current/bin/gitopiad /usr/local/bin/gitopiad
 ```
 
 ### Install Cosmovisor
@@ -77,8 +82,8 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ### Config app
 
 ```
-defundd config chain-id defund-private-4
-defundd config keyring-backend test
+gitopiad config chain-id gitopia-janus-testnet-2
+gitopiad config keyring-backend test
 ```
 
 ### Initialize Node
@@ -86,7 +91,7 @@ defundd config keyring-backend test
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-defundd init <YOUR_MONIKER> --chain-id defund-private-4
+gitopiad init <YOUR_MONIKER> --chain-id gitopia-janus-testnet-2
 ```
 
 ### Download Genesis file and addrbook
@@ -94,19 +99,19 @@ defundd init <YOUR_MONIKER> --chain-id defund-private-4
 - Genesis
 
 ```
-curl -Ls https://snapshots.kjnodes.com/defund-testnet/genesis.json > $HOME/.defund/config/genesis.json
+curl -Ls https://snapshots.kjnodes.com/gitopia-testnet/genesis.json > $HOME/.gitopia/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-curl -Ls https://snapshots.kjnodes.com/defund-testnet/addrbook.json > $HOME/.defund/config/addrbook.json
+curl -Ls https://snapshots.kjnodes.com/gitopia-testnet/addrbook.json > $HOME/.gitopia/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
 
 ```
-sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@defund-testnet.rpc.kjnodes.com:40659\"|" $HOME/.defund/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@gitopia-testnet.rpc.kjnodes.com:41659\"|" $HOME/.gitopia/config/config.toml
 ```
 
 ### config pruning
@@ -127,13 +132,13 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
 ### create service file and start node
 
 Create service file
-Create a `defundd.service` file in the `/etc/systemd/system` folder with the following code. 
+Create a `gitopiad.service` file in the `/etc/systemd/system` folder with the following code. 
 You can change `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
-sudo tee /etc/systemd/system/defundd.service > /dev/null << EOF
+sudo tee /etc/systemd/system/gitopiad.service > /dev/null << EOF
 [Unit]
-Description=defund-testnet node service
+Description=gitopia-testnet node service
 After=network-online.target
 
 [Service]
@@ -142,8 +147,8 @@ ExecStart=$(which cosmovisor) run start
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.defund"
-Environment="DAEMON_NAME=defundd"
+Environment="DAEMON_HOME=$HOME/.gitopia"
+Environment="DAEMON_NAME=gitopiad"
 Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
@@ -155,7 +160,7 @@ EOF
 
 ```
 sudo systemctl daemon-reload
-sudo systemctl enable defundd
-sudo systemctl restart defundd
-sudo journalctl -fu defundd -o cat
+sudo systemctl enable gitopiad
+sudo systemctl restart gitopiad
+sudo journalctl -fu gitopiad -o cat
 ```

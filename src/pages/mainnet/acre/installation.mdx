@@ -1,8 +1,8 @@
 ---
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
-network: Mainnet
 icon: acre
+network: Mainnet
 chain: acre_9052-1
 version: v1.1.1
 ---
@@ -68,8 +68,8 @@ sudo ln -s $HOME/.acred/cosmovisor/current/bin/acred /usr/local/bin/acred
 ```
 
 ### Install Cosmovisor
-```
 
+```
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 
@@ -78,6 +78,7 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 acred config chain-id acre_9052-1
 acred config keyring-backend file
+```
 
 ### Initialize Node
 

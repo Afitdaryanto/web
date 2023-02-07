@@ -17,16 +17,13 @@ sudo apt install lz4 -y
 
 ### reset chain data
 ```
-sudo systemctl stop acred
-cp $HOME/.acred/data/priv_validator_state.json $HOME/.acred/priv_validator_state.json.backup
-rm -rf $HOME/.acred/data
+SOON
 ```
 
 ### download data
 
 ```
-curl -o - -L  | lz4 -c -d - | tar -x -C $HOME/.acred --strip-components 2
-mv $HOME/.acred/priv_validator_state.json.backup $HOME/.acred/data/priv_validator_state.json
+Snapshot soon
 ```
 
 ### start node

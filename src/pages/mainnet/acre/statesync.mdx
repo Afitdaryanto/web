@@ -7,23 +7,34 @@ chain: acre_9052-1
 version: v1.1.1
 ---
 
-Use this command all at once , we dont provide lambda yet but we use a friendly validators resource
+### Setup
+This is the settings we use , you dont have to change anything
+
+- snapshot-interval= 1000
+- snapshot-keep-recent = 5
+
+### Intruction
 
 ```
-SNAP_RPC=https://rpc.acre.indonode.net:433
-peers="4573d28b7bf5cfb0a1b79e796efb388a1db8d046@rpc.acre.indonode.net:13656" 
-sed -i.bak -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.acred/config/config.toml
-LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
-TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+systemctl stop acred
+acred tendermint unsafe-reset-all --home $HOME/.acred --keep-addr-book
 
-echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+STATE_SYNC_RPC="https://rpc.acre.indonode.net:443"
 
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
-s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.acred/config/config.toml
-acred tendermint unsafe-reset-all --home $HOME/.acred
-systemctl restart acred && journalctl -u acred -f -o cat
+LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
+SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
+SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+PEERS=19c43481cde53e1325912847accb3c03ba58e059@rpc.acre.indonode.net:13656 
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.acred/config/config.toml
+
+sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.acred/config/config.toml
+sed -i.bak -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
+  $HOME/.acred/config/config.toml
+sed -i.bak -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
+  $HOME/.acred/config/config.toml
+sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
+  $HOME/.acred/config/config.toml
+
+systemctl restart acred && journalctl -fu acred-o cat
 ```

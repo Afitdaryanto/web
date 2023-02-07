@@ -17,22 +17,21 @@ sudo apt install lz4 -y
 
 ### reset chain data
 ```
-sudo systemctl stop lambdavm
-cp $HOME/.lambdavm/data/priv_validator_state.json $HOME/.lambdavm/priv_validator_state.json.backup
-rm -rf $HOME/.lambdavm/data
+sudo systemctl stop acred
+cp $HOME/.acred/data/priv_validator_state.json $HOME/.acred/priv_validator_state.json.backup
+rm -rf $HOME/.acred/data
 ```
 
 ### download data
 
 ```
-curl -o - -L http://lambda.snapshot.stavr.tech:5016/lambda/lambda-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.lambdavm --strip-components 2
-mv $HOME/.lambdavm/priv_validator_state.json.backup $HOME/.lambdavm/data/priv_validator_state.json
-wget -O $HOME/.lambdavm/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Lambda%20Network/addrbook.json"
+curl -o - -L  | lz4 -c -d - | tar -x -C $HOME/.acred --strip-components 2
+mv $HOME/.acred/priv_validator_state.json.backup $HOME/.acred/data/priv_validator_state.json
 ```
 
 ### start node
 
 ```
-sudo systemctl restart lambdavm
-sudo journalctl -fu lambdavm -o cat
+sudo systemctl restart acred
+sudo journalctl -fu acred -o cat
 ```

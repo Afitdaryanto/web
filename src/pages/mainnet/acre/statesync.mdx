@@ -36,5 +36,5 @@ sed -i.bak -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
 sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
   $HOME/.acred/config/config.toml
 
-systemctl restart acred && journalctl -fu acred-o cat
+systemctl restart acred && journalctl -fu acred -o cat
 ```

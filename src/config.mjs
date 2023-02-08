@@ -3,7 +3,7 @@ import defaultImage from './assets/images/indonode.png';
 const CONFIG = {
   name: 'indonode',
 
-  origin: 'https://indonode.dev/',
+  origin: 'https://indonode.net/',
   basePathname: '/',
   trailingSlash: false,
 

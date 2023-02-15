@@ -54,8 +54,8 @@ make build
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.dymension/cosmovisor/genesis/bin
-mv build/dymd $HOME/.dymension/cosmovisor/genesis/bin/
-rm -rf build
+mv bin/dymd $HOME/.dymension/cosmovisor/genesis/bin/
+rm -rf bin
 
 
 sudo ln -s $HOME/.dymension/cosmovisor/genesis $HOME/.dymension/cosmovisor/current
@@ -70,7 +70,6 @@ dymd version
 
 ### Install Cosmovisor
 ```
-
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 

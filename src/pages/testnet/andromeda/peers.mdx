@@ -1,0 +1,12 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Live Peers
+network: Testnet
+icon: andromeda
+chain: galileo-3
+version: galileo-3-v1.1.0-beta1
+---
+```
+PEERS=642a71c36bc4983b6ab90fce65d3ee7584b7a86c@rpc.andromeda-testnet.indonode.net:47656 
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.andromedad/config/config.toml
+```

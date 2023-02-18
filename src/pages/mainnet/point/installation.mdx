@@ -1,0 +1,164 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Installation Node
+icon: point
+network: Mainnet
+chain: point_10687-1
+version: v0.0.4
+---
+
+### Hardware requirements
+
+The following requirements are recommended for running Defund:
+
+- 4 or more physical CPU cores
+- At least 200GB of SSD disk storage
+- At least 8GB of memory (RAM)
+- At least 100mbps network bandwidth
+
+
+### Install dependencies Required
+
+```
+sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+```
+
+### Install go
+
+We are gonna use GO Version 1.19.5
+If you already have GO installed you can skip this 
+
+```
+ver="1.19.5"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+source ~/.bash_profile
+go version
+```
+
+### Install binary
+
+```
+cd $HOME
+rm -rf point-chain
+git clone https://github.com/pointnetwork/point-chain && cd point-chain
+git fetch --all
+git checkout tags/v0.0.4
+make install
+```
+
+Verify that you've installed pointd successfully
+
+```
+pointd version
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.pointd/cosmovisor/genesis/bin
+mv build/pointd $HOME/.pointd/cosmovisor/genesis/bin/
+rm -rf build
+```
+```
+sudo ln -s $HOME/.pointd/cosmovisor/genesis $HOME/.pointd/cosmovisor/current
+sudo ln -s $HOME/.pointd/cosmovisor/current/bin/pointd /usr/local/bin/pointd
+```
+
+### Install Cosmovisor
+
+```
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+```
+
+### Config app
+
+```
+pointd config chain-id point_10687-1
+pointd config keyring-backend file
+```
+
+### Initialize Node
+
+Please change `<YOUR_MONIKER>` To your own Moniker.
+
+```
+pointd init <YOUR_MONIKER> --chain-id point_10687-1
+```
+
+### Download Genesis file and addrbook
+
+- Genesis
+
+```
+wget https://raw.githubusercontent.com/pointnetwork/point-chain-config/main/mainnet-1/genesis.json
+mv config.toml genesis.json ~/.pointd/config/
+```
+
+- Addrbook
+
+```
+SOON
+```
+
+### Configure Seeds and Peers
+
+```
+PEERS=`curl -s https://raw.githubusercontent.com/pointnetwork/point-chain-config/main/mainnet-1/peers.txt`
+sed -i.bak -e "s/^persistent_peers *=.*/persistent	_peers = \"$PEERS\"/" $HOME/.pointd/config/config.toml
+```
+
+### Config pruning
+
+```
+PRUNING="custom"
+PRUNING_KEEP_RECENT="100"
+PRUNING_INTERVAL="19"
+
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.pointd/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.pointd/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
+\"$PRUNING_INTERVAL\"/" $HOME/.pointd/config/app.toml
+```
+
+
+### create service file and start node
+
+Create service file
+Create a `pointd.service` file in the `/etc/systemd/system` folder with the following code. 
+You can change `USER` with your Linux user name. You need sudo previlege to do this step.
+
+```
+sudo tee /etc/systemd/system/pointd.service > /dev/null << EOF
+[Unit]
+Description=point node service
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.pointd"
+Environment="DAEMON_NAME=pointd"
+Environment="UNSAFE_SKIP_BACKUP=true"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- Enable Service and Start Node
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable pointd
+sudo systemctl restart pointd
+sudo journalctl -fu pointd -o cat
+```
+

@@ -14,6 +14,7 @@ This is the settings we use , you dont have to change anything
 
 ### Intruction
 
+```
 systemctl stop blockxd
 blockxd tendermint unsafe-reset-all --home $HOME/.blockxd --keep-addr-book
 
@@ -35,3 +36,4 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
   $HOME/.blockxd/config/config.toml
 
 systemctl restart blockxd && journalctl -fu blockxd -o cat
+```

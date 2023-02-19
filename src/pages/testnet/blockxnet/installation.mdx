@@ -1,0 +1,153 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Installation Node
+network: Testnet
+icon: blockxnet
+chain: blockx_12345-2
+version: 0.1.1-test
+---
+
+### Hardware requirements
+
+The following requirements are recommended for running Defund:
+
+- 4 or more physical CPU cores
+- At least 200GB of SSD disk storage
+- At least 8GB of memory (RAM)
+- At least 100mbps network bandwidth
+
+
+### Install dependencies Required
+
+```
+sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+```
+
+### Install go
+
+We are gonna use GO Version 1.19.5
+If you already have GO installed you can skip this 
+
+```
+ver="1.19.5"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+source ~/.bash_profile
+go version
+```
+
+### Install binary
+
+```
+cd $HOME
+curl -LO https://github.com/defi-ventures/blockx-node-public-compiled/releases/download/v9.0.0/blockxd
+chmod +x blockxd
+```
+
+Verify that you've installed blockxd successfully
+
+```
+blockxd version
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.blockxd/cosmovisor/genesis/bin
+mv build/blockxd $HOME/.blockxd/cosmovisor/genesis/bin/
+rm -rf build
+
+
+sudo ln -s $HOME/.blockxd/cosmovisor/genesis $HOME/.blockxd/cosmovisor/current
+sudo ln -s $HOME/.blockxd/cosmovisor/current/bin/blockxd /usr/local/bin/blockxd
+```
+
+### Install Cosmovisor
+```
+
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+```
+
+### Config app
+
+```
+blockxd config chain-id blockx_12345-2
+blockxd config keyring-backend test
+```
+
+### Initialize Node
+
+Please change `<YOUR_MONIKER>` To your own Moniker.
+
+```
+blockxd init <YOUR_MONIKER> --chain-id blockx_12345-2
+```
+
+### Download Genesis file and addrbook
+
+- Genesis
+
+```
+curl -Ls https://raw.githubusercontent.com/defi-ventures/blockx-node-public-compiled/main/genesis.json > $HOME/.blockxd/config/genesis.json
+```
+
+
+### Configure Seeds and Peers
+
+```
+sed -i 's/persistent_peers = \"\"/persistent_peers = \"4a7401f7d6daa39d331196d8cc179a4dcb11b5f9@143.198.110.221:26656,49a5a62543f5fec60db42b00d9ebe192c3185e15@143.198.97.96:26656,dccf886659c4afcb0cd4895ccd9f2804c7e7e1cd@143.198.101.61:26656\"/g' $HOME/.blockxd/config/config.toml
+```
+
+### config pruning
+
+```
+PRUNING="custom"
+PRUNING_KEEP_RECENT="100"
+PRUNING_INTERVAL="19"
+
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.blockxd/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.blockxd/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
+\"$PRUNING_INTERVAL\"/" $HOME/.blockxd/config/app.toml
+```
+
+
+### create service file and start node
+
+Create service file
+Create a `blockxd.service` file in the `/etc/systemd/system` folder with the following code. 
+You can change `USER` with your Linux user name. You need sudo previlege to do this step.
+
+```
+sudo tee /etc/systemd/system/blockxd.service > /dev/null << EOF
+[Unit]
+Description=blockx-testnet node service
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.blockxd"
+Environment="DAEMON_NAME=blockxd"
+Environment="UNSAFE_SKIP_BACKUP=true"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- Enable Service and Start Node
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable blockxd
+sudo systemctl restart blockxd
+sudo journalctl -fu blockxd -o cat
+```

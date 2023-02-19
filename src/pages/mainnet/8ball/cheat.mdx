@@ -45,13 +45,13 @@ Check Wallet Balance
 
 Please adjust `<wallet>` , `MONIKER` , `YOUR_KEYBASE_ID` , `YOUR_DETAILS` , `YOUUR_WEBSITE_URL`
 
-Create Validator (Staking) with 10K Acre
+Create Validator (Staking) with 100 EBL
 ```
 8ball tx staking create-validator -y \
   --chain-id eightball-1 \
   --moniker Indonode \
   --pubkey "$(8ball tendermint show-validator)" \
-  --amount 10000000000000000000000uebl \
+  --amount 100000000uebl \
   --identity "YOUR_KEYBASE_ID" \
   --website "YOUUR_WEBSITE_URL" \
   --details "YOUR_DETAILS" \

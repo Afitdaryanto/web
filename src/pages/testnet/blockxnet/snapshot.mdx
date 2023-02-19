@@ -1,0 +1,33 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Snapshot
+network: Testnet
+icon: blockxnet
+chain: blockx_12345-2
+version: 0.1.1-test
+---
+## Intruction
+
+
+### Install lz4
+```
+sudo apt install lz4 -y
+```
+
+### Stop Planqd and Backup priv_validator_state.json
+```
+sudo systemctl stop blockxd
+cp $HOME/.blockxd/data/priv_validator_state.json $HOME/.blockxd/priv_validator_state.json.backup
+rm -rf $HOME/.blockxd/data
+```
+
+### Download Snapshot
+```
+SOON
+```
+
+### Restart Node and Check the logs
+
+```
+sudo systemctl restart blockxd && sudo journalctl -u blockxd -f --no-hostname -o cat
+```

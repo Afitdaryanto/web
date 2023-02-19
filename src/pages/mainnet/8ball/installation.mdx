@@ -1,0 +1,160 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Installation Node
+icon: 8ball
+network: Mainnet
+chain: eightball-1
+version:  
+---
+
+### Hardware requirements
+
+The following requirements are recommended for running Defund:
+
+- 4 or more physical CPU cores
+- At least 200GB of SSD disk storage
+- At least 8GB of memory (RAM)
+- At least 100mbps network bandwidth
+
+
+### Install dependencies Required
+
+```
+sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+```
+
+### Install go
+
+We are gonna use GO Version 1.19.5
+If you already have GO installed you can skip this 
+
+```
+ver="1.19.5"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+source ~/.bash_profile
+go version
+```
+
+### Install binary
+
+```
+cd $HOME
+wget https://8ball.info/8ball.tar.gz
+tar -xvf 8ball.tar.gz
+rm -rf 8ball.tar.gz
+```
+
+Verify that you've installed 8ball successfully
+
+```
+8ball version
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.8ball/cosmovisor/genesis/bin
+mv 8ball $HOME/.8ball/cosmovisor/genesis/bin/
+```
+```
+sudo ln -s $HOME/.8ball/cosmovisor/genesis $HOME/.8ball/cosmovisor/current
+sudo ln -s $HOME/.8ball/cosmovisor/current/bin/8ball /usr/local/bin/8ball
+```
+
+### Install Cosmovisor
+
+```
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+```
+
+### Config app
+
+```
+8ball config chain-id eightball-1
+8ball config keyring-backend file
+```
+
+### Initialize Node
+
+Please change `<YOUR_MONIKER>` To your own Moniker.
+
+```
+8ball init <YOUR_MONIKER> --chain-id eightball-1
+```
+
+### Download Genesis file and addrbook
+
+- Genesis
+
+```
+curl -Ls https://8ball.info/8ball-genesis.json > $HOME/.8ball/config/genesis.json
+```
+
+- Addrbook
+
+```
+SOON
+```
+
+### Configure Seeds and Peers
+
+```
+peers="fca96d0a1d7357afb226a49c4c7d9126118c37e9@one.8ball.info:26656,aa918e17c8066cd3b031f490f0019c1a95afe7e3@two.8ball.info:26656,98b49fea92b266ed8cfb0154028c79f81d16a825@three.8ball.info:26656,2dc5fe97136b4a1f549b8da676f958f757ee2d1a@rpc.8ball.indonode.net:22656"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.8ball/config/config.toml
+```
+
+### Config pruning
+
+```
+PRUNING="custom"
+PRUNING_KEEP_RECENT="100"
+PRUNING_INTERVAL="19"
+
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.8ball/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.8ball/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
+\"$PRUNING_INTERVAL\"/" $HOME/.8ball/config/app.toml
+```
+
+
+### create service file and start node
+
+Create service file
+Create a `8ball.service` file in the `/etc/systemd/system` folder with the following code. 
+You can change `USER` with your Linux user name. You need sudo previlege to do this step.
+
+```
+sudo tee /etc/systemd/system/8ball.service > /dev/null << EOF
+[Unit]
+Description=8ball node service
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.8ball"
+Environment="DAEMON_NAME=8ball"
+Environment="UNSAFE_SKIP_BACKUP=true"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- Enable Service and Start Node
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable 8ball
+sudo systemctl restart 8ball
+sudo journalctl -fu 8ball -o cat
+```
+

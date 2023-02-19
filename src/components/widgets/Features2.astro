@@ -56,15 +56,49 @@ const items = [
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-center my-12 dark:text-white">
 				{
 					items.map(({ title, description, icon , Link }) => (
-						<div class="relative flex flex-col p-6 bg-gray dark:bg-slate-900 rounded shadow-xl hover:shadow-lg transition dark:border dark:border-slate-800">
-							<a href={Link}>
-								<Icon name={icon} class="w-12 h-12 mx-auto my-4 cursor-pointer transition duration-200 ease-in-out transform hover:scale-150" />
-							</a>
-							<p class="text-black dark:text-black text-md items-center font font-semibold text-center">{title}</p>
-						</div>
+					<div class="relative flex flex-col p-6 bg-gray dark:bg-slate-900 rounded shadow-xl hover:shadow-lg transition dark:border dark:border-slate-800 text-center">
+    <a href={Link}>
+        <Icon name={icon} class="w-12 h-12 mx-auto my-4 cursor-pointer transition duration-200 ease-in-out transform hover:scale-150" />
+    </a>
+    <p class="text-black dark:text-black text-md font-semibold mt-2 relative">
+        {title}
+        <span class="pulse-shockwave inline-block ml-2"></span>
+    </p>
+</div>
+
 					))
 				}
 			</div>
-			</div>
-						</div>
+		</div>
+	</div>
 </section>
+
+<style>
+.pulse-shockwave {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #48df48;
+  animation: pulse 2s linear infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.7);
+  }
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+    box-shadow: 0 0 0 10px rgba(0, 128, 0, 0);
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+    box-shadow: 0 0 0 10px rgba(0, 128, 0, 0);
+  }
+}
+
+</style>

@@ -140,23 +140,23 @@ Set Your own Custom Ports
 You can change value `CUSTOM_PORT=47` To any other ports
 ```
 CUSTOM_PORT=47
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${CUSTOM_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${CUSTOM_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${CUSTOM_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${CUSTOM_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${CUSTOM_PORT}660\"%" $HOME/.dymension/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${CUSTOM_PORT}317\"%; s%^address = \":8080\"%address = \":${CUSTOM_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${CUSTOM_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${CUSTOM_PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${CUSTOM_PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${CUSTOM_PORT}546\"%" $HOME/.dymension/config/app.toml
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${CUSTOM_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${CUSTOM_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${CUSTOM_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${CUSTOM_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${CUSTOM_PORT}660\"%" $HOME/.andromedad/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${CUSTOM_PORT}317\"%; s%^address = \":8080\"%address = \":${CUSTOM_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${CUSTOM_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${CUSTOM_PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${CUSTOM_PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${CUSTOM_PORT}546\"%" $HOME/.andromedad/config/app.toml
 ```
 
 Enable Indexing usually enabled by default
 ```
-sed -i -e 's|^indexer *=.*|indexer = "kv"|' $HOME/.dymension/config/config.toml
+sed -i -e 's|^indexer *=.*|indexer = "kv"|' $HOME/.andromedad/config/config.toml
 ```
 
 Disable Indexing
 ```
-sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/.dymension/config/config.toml
+sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/.andromedad/config/config.toml
 ```
 
 Reset Chain Data
 ```
-andromedad tendermint unsafe-reset-all --home $HOME/.dymension--keep-addr-book
+andromedad tendermint unsafe-reset-all --home $HOME/.andromedad--keep-addr-book
 ```
 
 ### Delete Node
@@ -170,6 +170,6 @@ sudo systemctl disable andromedad && \
 rm /etc/systemd/system/andromedad.service && \
 sudo systemctl daemon-reload && \
 cd $HOME && \
-rm -rf .dymension&& \
+rm -rf .andromedad&& \
 rm -rf $(which andromedad)
 ```

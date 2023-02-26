@@ -1,0 +1,35 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Snapshot
+icon: arkhadian
+network: Mainnet
+chain: arkh
+version: v2.0.0 
+---
+- Updated every 6 Hours 
+
+## Intruction
+
+### Install lz4
+```
+sudo apt install lz4 -y
+```
+
+### Stop arkhd and Backup priv_validator_state.json
+```
+sudo systemctl stop arkhd
+cp $HOME/.arkh/data/priv_validator_state.json $HOME/.arkh/priv_validator_state.json.backup
+rm -rf $HOME/.arkh/data
+```
+
+### Download Snapshot
+```
+curl -L https://arkhadian.service.indonode.net/arkhadian-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.arkh
+mv $HOME/.arkh/priv_validator_state.json.backup $HOME/.arkh/data/priv_validator_state.json
+```
+
+### Restart Node and Check the logs
+
+```
+sudo systemctl restart arkhd && sudo journalctl -fu arkhd -o cat
+```

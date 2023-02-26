@@ -1,0 +1,153 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Installation Node
+icon: arkhadian
+network: Mainnet
+chain: arkh
+version: v2.0.0  
+---
+
+### Hardware requirements
+
+The following requirements are recommended for running Defund:
+
+- 4 or more physical CPU cores
+- At least 200GB of SSD disk storage
+- At least 8GB of memory (RAM)
+- At least 100mbps network bandwidth
+
+
+### Install dependencies Required
+
+```
+sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+```
+
+### Install go
+
+We are gonna use GO Version 1.19.5
+If you already have GO installed you can skip this 
+
+```
+ver="1.19.5"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+source ~/.bash_profile
+go version
+```
+
+### Install binary
+
+```
+cd $HOME
+rm -rf arkh-blockchain
+git clone https://github.com/vincadian/arkh-blockchain
+cd arkh-blockchain
+git checkout v2.0.0
+go install ./...
+```
+
+Verify that you've installed arkhd successfully
+
+```
+arkhd version
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.arkh/cosmovisor/genesis/bin
+
+sudo ln -s $HOME/go/bin/arkhd $HOME/.arkh/cosmovisor/genesis/bin/
+sudo ln -s $HOME/.arkh/cosmovisor/genesis $HOME/.arkh/cosmovisor/current
+```
+
+### Install Cosmovisor
+
+```
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+```
+
+### Config app
+
+```
+arkhd config chain-id arkh
+arkhd config keyring-backend file
+```
+
+### Initialize Node
+
+Please change `<YOUR_MONIKER>` To your own Moniker.
+
+```
+arkhd init <YOUR_MONIKER> --chain-id arkh
+```
+
+### Download Genesis file and addrbook
+
+- Genesis
+
+```
+curl -Ls https://raw.githubusercontent.com/vincadian/arkh-blockchain/master/genesis/genesis.json > $HOME/.8ball/config/genesis.json
+```
+
+### Configure Seeds and Peers
+
+```
+sed -i -e "s|^seeds *=.*|seeds = \"808f01d4a7507bf7478027a08d95c575e1b5fa3c@asc-dataseed.arkhadian.com:26656 \"|" $HOME/.arkh/config/config.toml
+```
+
+### Config pruning
+
+```
+PRUNING="custom"
+PRUNING_KEEP_RECENT="100"
+PRUNING_INTERVAL="19"
+
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.arkh/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.arkh/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
+\"$PRUNING_INTERVAL\"/" $HOME/.arkh/config/app.toml
+```
+
+
+### create service file and start node
+
+Create service file
+Create a `arkhd.service` file in the `/etc/systemd/system` folder with the following code. 
+You can change `USER` with your Linux user name. You need sudo previlege to do this step.
+
+```
+sudo tee /etc/systemd/system/arkhd.service > /dev/null << EOF
+[Unit]
+Description=arkhadian node service
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.arkh"
+Environment="DAEMON_NAME=arkhd"
+Environment="UNSAFE_SKIP_BACKUP=true"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+- Enable Service and Start Node
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable arkhd
+sudo systemctl restart arkhd
+sudo journalctl -fu arkhd -o cat
+```
+

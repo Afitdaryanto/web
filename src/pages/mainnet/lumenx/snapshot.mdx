@@ -1,0 +1,37 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Snapshot
+icon: lumenx
+network: Mainnet
+chain: LumenX
+version: v1.3.3
+---
+- Update every 6 Hours
+
+## Intruction
+
+### install lz4
+```
+sudo apt install lz4 -y
+```
+
+### reset chain data
+```
+sudo systemctl stop lumenxd
+cp $HOME/.lumenx/data/priv_validator_state.json $HOME/.lumenx/priv_validator_state.json.backup
+rm -rf $HOME/.lumenx/data
+```
+
+### download data
+
+```
+curl -L https://lumenx.service.indonode.net/lumenx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.lumenx
+mv $HOME/.lumenx/priv_validator_state.json.backup $HOME/.lumenx/data/priv_validator_state.json
+```
+
+### start node
+
+```
+sudo systemctl restart lumenxd
+sudo journalctl -fu lumenxd -o cat
+```

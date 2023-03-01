@@ -151,6 +151,12 @@ WantedBy=multi-user.target
 EOF
 ```
 
+### Download Latest Snapshot
+```
+curl -L https://acre.service.indonode.net/acre-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.acred
+[[ -f $HOME/.acred/data/upgrade-info.json ]] && cp $HOME/.acred/data/upgrade-info.json $HOME/.acred/cosmovisor/genesis/upgrade-info.json
+```
+
 - Enable Service and Start Node
 
 ```

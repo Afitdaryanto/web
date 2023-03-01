@@ -91,7 +91,7 @@ arkhd init <YOUR_MONIKER> --chain-id arkh
 - Genesis
 
 ```
-curl -Ls https://raw.githubusercontent.com/vincadian/arkh-blockchain/master/genesis/genesis.json > $HOME/.8ball/config/genesis.json
+curl -Ls https://raw.githubusercontent.com/vincadian/arkh-blockchain/master/genesis/genesis.json > $HOME/.arkh/config/genesis.json
 ```
 
 ### Configure Seeds and Peers
@@ -140,6 +140,12 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+```
+
+### Download Latest Snapshot
+```
+curl -L https://arkhadian.service.indonode.net/arkhadian-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.arkh
+[[ -f $HOME/.arkh/data/upgrade-info.json ]] && cp $HOME/.arkh/data/upgrade-info.json $HOME/.arkh/cosmovisor/genesis/upgrade-info.json
 ```
 
 - Enable Service and Start Node

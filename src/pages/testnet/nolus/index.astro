@@ -6,10 +6,10 @@ import { Icon } from 'astro-icon';
 
 const name= 'nolus';
 const icon= 'nolus';
-const chain= 'nolus-rila';
 const network= 'Testnet';
-const stake= 'https://explorer.indonode.dev/';
-const version= 'v0.1.39';
+const chain= 'nolus-rila';
+const version= 'v0.1.43';
+const stake= 'https://explorer.indonode.net/nolus/staking/nolusvaloper19ysqd82sy49rypvsmaf97vmst22h76a8p8mywp';
 const meta = {
 	title: SITE.title,
 	description: SITE.description,
@@ -18,23 +18,19 @@ const meta = {
 
 const items = [
 	{
-		title: 'Addrbook',
-		Link: 'https://indonode.net/testnet/nolus/addrbook',
-	},
-	{
-		title: 'Api',
+		title: 'API Endpoints',
 		Link: 'https://indonode.net/testnet/nolus/api',
 	},
 	{
 		title: 'Explorer',
-		Link: 'https://testnet-explorer.genznodes.dev/nolus',
+		Link: 'https://explorer.indonode.net/nolus/staking',
 	},
 	{
-		title: 'Genesisi file',
-		Link: 'https://indonode.net/testnet/nolus/grpc',
+		title: 'Genesis file',
+		Link: 'https://indonode.net/testnet/nolus/genesis',
 	},
 	{
-		title: 'gRPC',
+		title: 'gRPC Endpoints',
 		Link: 'https://indonode.net/testnet/nolus/grpc',
 	},
 	{
@@ -46,7 +42,7 @@ const items = [
 		Link: 'https://indonode.net/testnet/nolus/peers',
 	},
 	{
-		title: 'Rpc',
+		title: 'RPC Endpoints',
 		Link: 'https://indonode.net/testnet/nolus/rpc',
 	},
 	{
@@ -56,7 +52,11 @@ const items = [
 	{
 		title: 'Snapshot',
 		Link: 'https://indonode.net/testnet/nolus/snapshot',
-	},	
+	},
+	{
+		title: 'CLI Cheatsheet',
+		Link: 'https://indonode.net/testnet/nolus/cheat',
+	},		
 ]	
 ---
 

@@ -60,8 +60,8 @@ nolusd version
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.nolus/cosmovisor/genesis/bin
-mv build/nolusd $HOME/.nolus/cosmovisor/genesis/bin/
-rm -rf build
+mv target/releases/nolusd $HOME/.nolus/cosmovisor/genesis/bin/
+rm -rf target/
 
 
 sudo ln -s $HOME/.nolus/cosmovisor/genesis $HOME/.nolus/cosmovisor/current

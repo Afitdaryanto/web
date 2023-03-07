@@ -60,8 +60,8 @@ ojod version
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.ojo/cosmovisor/genesis/bin
-mv target/releases/ojod $HOME/.ojo/cosmovisor/genesis/bin/
-rm -rf target/
+mv build/ojod $HOME/.ojo/cosmovisor/genesis/bin/
+rm -rf build/
 
 
 sudo ln -s $HOME/.ojo/cosmovisor/genesis $HOME/.ojo/cosmovisor/current

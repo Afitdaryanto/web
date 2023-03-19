@@ -62,14 +62,12 @@ mkdir -p $HOME/.bonusblock/cosmovisor/genesis/bin
 cp /root/go/bin/bonus-blockd $HOME/.bonusblock/cosmovisor/genesis/bin/
 
 
-
 sudo ln -s $HOME/.bonusblock/cosmovisor/genesis $HOME/.bonusblock/cosmovisor/current
 sudo ln -s $HOME/.bonusblock/cosmovisor/current/bin/bonus-blockd /root/go/bin/bonus-blockd
 ```
 
 ### Install Cosmovisor
 ```
-
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 

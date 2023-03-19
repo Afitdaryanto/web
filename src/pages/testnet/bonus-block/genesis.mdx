@@ -9,7 +9,5 @@ version:
 ## instruction
 
 ```
-wget -O genesis.json https://snapshots.polkachu.com/testnet-genesis/ojo/genesis.json --inet4-only
-mv genesis.json ~/.ojo/config
+curl https://bonusblock-testnet.alter.network/genesis? | jq '.result.genesis' > ~/.bonusblock/config/genesis.json
 ```
-Credit to Polkachu

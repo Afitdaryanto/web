@@ -1,0 +1,175 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Installation Node
+network: Testnet
+icon: bonus
+chain: blocktopia-01
+version: 
+---
+
+### Hardware requirements
+
+The following requirements are recommended for running Defund:
+
+- 4 or more physical CPU cores
+- At least 200GB of SSD disk storage
+- At least 8GB of memory (RAM)
+- At least 100mbps network bandwidth
+
+
+### Install dependencies Required
+
+```
+sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+```
+
+### Install go
+
+We are gonna use GO Version 1.19.5
+If you already have GO installed you can skip this 
+
+```
+ver="1.19.5"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+source ~/.bash_profile
+go version
+```
+
+### Install binary
+
+```
+cd $HOME
+rm -rf BonusBlock-chain/
+git clone https://github.com/BBlockLabs/BonusBlock-chain
+cd BonusBlock-chain/
+make build
+```
+
+Verify that you've installed bonus-blockd successfully
+
+```
+bonus-blockd version
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.bonusblock/cosmovisor/genesis/bin
+cp /root/go/bin/bonus-blockd $HOME/.bonusblock/cosmovisor/genesis/bin/
+
+
+
+sudo ln -s $HOME/.bonusblock/cosmovisor/genesis $HOME/.bonusblock/cosmovisor/current
+sudo ln -s $HOME/.bonusblock/cosmovisor/current/bin/bonus-blockd /root/go/bin/bonus-blockd
+```
+
+### Install Cosmovisor
+```
+
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+```
+
+### Config app
+
+```
+bonus-blockd config chain-id blocktopia-01
+bonus-blockd config keyring-backend test
+```
+
+### Initialize Node
+
+Please change `<YOUR_MONIKER>` To your own Moniker.
+
+```
+bonus-blockd init <YOUR_MONIKER> --chain-id blocktopia-01
+```
+
+### Download Genesis file and addrbook
+
+- Genesis and Addrbook
+
+```
+curl https://bonusblock-testnet.alter.network/genesis? | jq '.result.genesis' > ~/.bonusblock/config/genesis.json
+curl -Ls https://raw.githubusercontent.com/elangrr/testnet_guide/main/services/addrbook/bonusblock/addrbook.json > $HOME/.bonusblock/config/addrbook.json
+```
+
+
+### Configure Seeds and Peers
+
+```
+sed -i -e "s|^seeds *=.*|seeds = \"e5e04918240cfe63e20059a8abcbe62f7eb05036@bonusblock-testnet-p2p.alter.network:26656\"|" $HOME/.bonusblock/config/config.toml
+```
+
+### Set minimum-gas-prices
+
+```
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0ubonus"|g' $HOME/.bonusblock/config/app.toml
+```
+
+### config pruning
+
+```
+PRUNING="custom"
+PRUNING_KEEP_RECENT="100"
+PRUNING_INTERVAL="19"
+
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.bonusblock/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.bonusblock/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
+\"$PRUNING_INTERVAL\"/" $HOME/.bonusblock/config/app.toml
+```
+
+
+### create service file and start node
+
+Create service file
+Create a `bonus-blockd.service` file in the `/etc/systemd/system` folder with the following code. 
+You can change `USER` with your Linux user name. You need sudo previlege to do this step.
+
+```
+sudo tee /etc/systemd/system/bonus-blockd.service > /dev/null << EOF
+[Unit]
+Description=bonusblock testnet node service
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which cosmovisor) run start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.bonusblock"
+Environment="DAEMON_NAME=bonus-blockd"
+Environment="UNSAFE_SKIP_BACKUP=true"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Download Latest Snapshot
+```
+curl -L https://bonusb-t.service.indonode.net/bonusb-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.bonusblock
+[[ -f $HOME/.bonusblock/data/upgrade-info.json ]] && cp $HOME/.bonusblock/data/upgrade-info.json $HOME/.bonusblock/cosmovisor/genesis/upgrade-info.json
+```
+
+- Enable Service and Start Node
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable bonus-blockd
+sudo systemctl restart bonus-blockd
+sudo journalctl -fu bonus-blockd -o cat
+```
+### Create Validator
+
+Heads up to the Cheat Sheets to create validator
+
+<a href="https://www.indonode.net/testnet/bonus-block/cheat" target="_blank">
+  <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
+</a>

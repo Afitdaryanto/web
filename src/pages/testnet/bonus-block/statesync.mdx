@@ -24,7 +24,7 @@ LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.heigh
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=f4538b599f92e695b26409c0bd7da7e3b32eec4d@rpc.bonusblock-t.indonode.net:30656 
+PEERS=6f6d0b31eba359eacd21a51c51461bf7984ba454@rpc.bonusb-t.indonode.net:32656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.bonusblock/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.bonusblock/config/config.toml

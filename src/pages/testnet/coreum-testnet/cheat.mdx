@@ -48,7 +48,7 @@ Please adjust `<wallet>` , `MONIKER` , `YOUR_KEYBASE_ID` , `YOUR_DETAILS` , `YOU
 Create Validator (Staking)
 ```
 cored tx staking create-validator \
---amount=100000000utestcore \
+--amount=30000000000utestcore \
 --pubkey=$(cored tendermint show-validator) \
 --moniker="YOUR_MONIKER_NAME" \
 --identity="YOUR_KEYBASE_ID" \
@@ -58,11 +58,10 @@ cored tx staking create-validator \
 --commission-rate=0.05 \
 --commission-max-rate=0.20 \
 --commission-max-change-rate=0.01 \
---min-self-delegation=1 \
+--min-self-delegation=20000000000 \
 --from=wallet \
---gas-adjustment=1.4 \
 --gas auto \
---gas-prices 0utestcore \
+--fees 5000utestcore \
 -y
 ```
 
@@ -76,16 +75,15 @@ cored tx staking edit-validator \
 --chain-id coreum-testnet-1 \
 --commission-rate=0.05 \
 --from=<wallet> \
---gas-adjustment="1.4" \
 --gas auto \
---gas-prices 0utestcore \
+--fees 5000utestcore \
 -y
 ```
 
 
 Unjail Validator
 ```
-cored tx slashing unjail --from wallet --chain-id --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx slashing unjail --from wallet --chain-id --chain-id coreum-testnet-1 --gas auto --fees 5000utestcore -y
 ```
 
 Check Jailed Reason
@@ -97,27 +95,27 @@ cored query slashing signing-info $(cored tendermint show-validator)
 
 Withdraw Rewards
 ```
-cored tx distribution withdraw-all-rewards --from wallet --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx distribution withdraw-all-rewards --from wallet --chain-id coreum-testnet-1 --gas auto --fees 5000utestcore -y
 ```
 
 Withdraw Rewards with Comission
 ```
-cored tx distribution withdraw-rewards $(cored keys show wallet --bech val -a) --commission --from wallet --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx distribution withdraw-rewards $(cored keys show wallet --bech val -a) --commission --from wallet --chain-id coreum-testnet-1 --gas auto --fees 5000utestcore -y
 ```
 
 Delegate Token to your own validator
 ```
-cored tx staking delegate $(cored keys show wallet --bech val -a) <AMMOUNT>utestcore --from wallet --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx staking delegate $(cored keys show wallet --bech val -a) <AMMOUNT>utestcore --from wallet --chain-id coreum-testnet-1  --gas auto --fees 5000utestcore -y
 ```
 
 Delegate Token to other validator
 ```
-cored tx staking redelegate $(cored keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> <AMMOUNT>utestcore --from wallet --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx staking redelegate $(cored keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> <AMMOUNT>utestcore --from wallet --chain-id coreum-testnet-1 --gas auto --fees 5000utestcore -y
 ```
 
 Unbond Token from your validator
 ```
-cored tx staking unbond $(cored keys show wallet --bech val -a) <AMMOUNT>utestcore --from wallet --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx staking unbond $(cored keys show wallet --bech val -a) <AMMOUNT>utestcore --from wallet --chain-id coreum-testnet-1  --gas auto --fees 5000utestcore -y
 ```
 
 Send Token to another wallet
@@ -131,7 +129,7 @@ Vote
 You can change the value of `yes` to `no`,`abstain`,`nowithveto`
 
 ```
-cored tx gov vote 1 yes --from wallet --chain-id coreum-testnet-1 --gas-adjustment 1.4 --gas auto --gas-prices 0utestcore -y
+cored tx gov vote 1 yes --from wallet --chain-id coreum-testnet-1  --gas auto --fees 5000utestcore -y
 ```
 
 ### Other

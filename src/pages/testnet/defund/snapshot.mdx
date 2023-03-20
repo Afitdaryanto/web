@@ -3,11 +3,11 @@ layout: '~/layouts/MarkdownLayout.astro'
 title: Snapshot
 network: Testnet
 icon: defund
-chain: defund-private-4
-version: v0.2.4
+chain: orbit-alpha-1
+version: v0.2.6
 ---
 ## Intruction
-For this snapshot I use kjnodes snapshot , it said updated every 6 hours
+Updated every 6 Hours
 
 ### Install lz4
 ```
@@ -23,7 +23,7 @@ rm -rf $HOME/.defund/data
 
 ### Download Snapshot
 ```
-curl -L https://snapshots.kjnodes.com/defund-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.defund
+curl -L https://snapshots.indonode.net/defund/defund-snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.defund
 mv $HOME/.defund/priv_validator_state.json.backup $HOME/.defund/data/priv_validator_state.json
 ```
 

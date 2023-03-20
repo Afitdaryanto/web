@@ -3,8 +3,8 @@ layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
 network: Testnet
 icon: defund
-chain: defund-private-4
-version: v0.2.4
+chain: orbit-alpha-1
+version: v0.2.6
 ---
 
 ### Hardware requirements
@@ -47,7 +47,7 @@ cd $HOME
 rm -rf defund
 git clone https://github.com/defund-labs/defund.git
 cd defund
-git checkout v0.2.4
+git checkout v0.2.6
 make build
 ```
 
@@ -77,7 +77,7 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ### Config app
 
 ```
-defundd config chain-id defund-private-4
+defundd config chain-id orbit-alpha-1
 defundd config keyring-backend test
 ```
 
@@ -86,7 +86,7 @@ defundd config keyring-backend test
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-defundd init <YOUR_MONIKER> --chain-id defund-private-4
+defundd init <YOUR_MONIKER> --chain-id orbit-alpha-1
 ```
 
 ### Download Genesis file and addrbook

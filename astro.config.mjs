@@ -9,6 +9,9 @@ import image from '@astrojs/image';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
+import clipboard from 'clipboard';
+window.ClipboardJS = clipboard;
+
 
 import { SITE } from './src/config.mjs';
 

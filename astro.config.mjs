@@ -61,7 +61,9 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: 'prism',
     remarkPlugins: [],
+    rehypePlugins: [],
     gfm: true,
+    copyButton: true,
   },
 
   vite: {

@@ -9,8 +9,8 @@ import image from '@astrojs/image';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
-import clipboard from 'clipboard';
-window.ClipboardJS = clipboard;
+
+
 
 
 import { SITE } from './src/config.mjs';
@@ -19,7 +19,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const whenExternalScripts = (items = []) =>
   SITE.googleAnalyticsId ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
-
+  import clipboard from 'clipboard';
+  
 export default defineConfig({
   site: SITE.origin,
   base: SITE.basePathname,
@@ -68,6 +69,7 @@ export default defineConfig({
     gfm: true,
     copyButton: true,
   },
+  
 
   vite: {
     resolve: {
@@ -77,3 +79,4 @@ export default defineConfig({
     },
   },
 });
+window.ClipboardJS = clipboard;

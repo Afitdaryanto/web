@@ -6,16 +6,8 @@ icon: nois
 chain: nois-testnet-004
 version: v0.6.0
 ---
+Automatically adding Live peers to your config.toml file
 ```
-0996bb0bdda49d3a3c8150a84a7952fd264aae04@95.216.2.232:32656
-5ecd40831e453845587cbd03534e68a7b9fc3576@65.109.92.79:21656
-d3ce97769bc00a698aee0f40eb8de0b2279b6b2c@65.109.28.177:32656
-0154634ac7c81382fb2dc4017d1127a8ed0c0aec@65.108.254.238:26656
-30bf62128e21bd7b4e375a43654d04a69a2e06a4@65.21.104.61:26656
-1a1086d1c1c671b1e3e3e189c495318594f3a0a3@144.76.30.36:15648
-c077539ccaf29a1843b6c99fdb8a75ffb93e5eaf@195.201.197.4:30656
-72cd4222818d25da5206092c3efc2c0dd0ec34fe@161.97.96.91:36656
-ab5e296d4a0a11616c5948457f10fcf0c5a6472d@51.195.88.136:15648
-1ebc84b0db1874bd63b7ffe4fa522ac356bcf0d5@159.223.157.30:26656
-debe6155c42f2cb39cc118246c9a0caa18082187@45.94.58.246:41656
+PEERS="$(curl -sS https://nois-testnet.rpc.kjnodes.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.noisd/config/config.toml
 ```

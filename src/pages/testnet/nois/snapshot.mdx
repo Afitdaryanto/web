@@ -23,7 +23,7 @@ rm -rf $HOME/.noisd/data
 
 ### Download Snapshot
 ```
-curl -L https://snapshots.indonode.net/nois/nois-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.noisd
+curl -L https://snapshots.kjnodes.com/nois-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.noisd
 mv $HOME/.noisd/priv_validator_state.json.backup $HOME/.noisd/data/priv_validator_state.json
 ```
 

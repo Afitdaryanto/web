@@ -1,10 +1,10 @@
 ---
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
-network: Testnet
-icon: realio
-chain: realionetwork_3300-1
-version: v0.8.0-rc2
+network: Mainnet
+icon: nois
+chain: nois-1
+version: v1.0.0
 ---
 
 ### Hardware requirements
@@ -44,28 +44,28 @@ go version
 
 ```
 cd $HOME
-rm -rf realio-network/
-git clone https://github.com/realiotech/realio-network.git
-git checkout v0.8.0-rc2
-cd realio-network/
+rm -rf noisd/
+git clone https://github.com/noislabs/noisd
+git checkout v1.0.0
+cd noisd/
 make build
 ```
 
-Verify that you've installed realio-networkd successfully
+Verify that you've installed noisd successfully
 
 ```
-realio-networkd version
+noisd version
 ```
 
 ### Prepare Cosmovisor
 ```
-mkdir -p $HOME/.realio-network/cosmovisor/genesis/bin
-mv build/realio-networkd $HOME/.realio-network/cosmovisor/genesis/bin/
-rm -rf build
+mkdir -p $HOME/.noisd/cosmovisor/genesis/bin
+mv target/releases/noisd $HOME/.noisd/cosmovisor/genesis/bin/
+rm -rf target/
 
 
-sudo ln -s $HOME/.realio-network/cosmovisor/genesis $HOME/.realio-network/cosmovisor/current
-sudo ln -s $HOME/.realio-network/cosmovisor/current/bin/realio-networkd /usr/local/bin/realio-networkd
+sudo ln -s $HOME/.noisd/cosmovisor/genesis $HOME/.noisd/cosmovisor/current
+sudo ln -s $HOME/.noisd/cosmovisor/current/bin/noisd /usr/local/bin/noisd
 ```
 
 ### Install Cosmovisor
@@ -77,8 +77,8 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ### Config app
 
 ```
-realio-networkd config chain-id realionetwork_3300-1
-realio-networkd config keyring-backend test
+noisd config chain-id nois-1
+noisd config keyring-backend file
 ```
 
 ### Initialize Node
@@ -86,7 +86,7 @@ realio-networkd config keyring-backend test
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3300-1
+noisd init <YOUR_MONIKER> --chain-id nois-1
 ```
 
 ### Download Genesis file and addrbook
@@ -94,21 +94,22 @@ realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3300-1
 - Genesis
 
 ```
-curl -Ls https://snapshots.indonode.net/realio/genesis.json > $HOME/.realio-network/config/genesis.json
+curl -Ls https://snapshots.indonode.net/nois/genesis.json > $HOME/.noisd/config/genesis.json
 ```
 
 - Addrbook
-
 ```
-curl -Ls https://snapshots.indonode.net/realio/addrbook.json > $HOME/.realio-network/config/addrbook.json
+curl -Ls https://snapshots.indonode.net/nois/addrbook.json > $HOME/.noisd/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
 
 ```
-SEEDS="b0db1d25f10e94c13ba5080268e3f8c58eea6b69@rpc.realio-t.nodexcapital.com:23156,ee23c6b2367c7df0d71a7def5540cda879a06dab@realio-testnet-seed.itrocket.net:23656"
-PEERS="ec2dbd6e5d25501c50fb8585b5678a7460ef11da@144.126.196.99:26656,5bd91f6e7e3bcaaddead32fd37d67458723fec73@159.223.132.183:26656"
-sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.realio-network/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"20e1000e88125698264454a884812746c2eb4807@seeds.lavenderfive.com:17356\"|" $HOME/.noisd/config/config.toml
+```
+
+```
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0unois\"|" $HOME/.noisd/config/app.toml
 ```
 
 ### config pruning
@@ -118,24 +119,24 @@ PRUNING="custom"
 PRUNING_KEEP_RECENT="100"
 PRUNING_INTERVAL="19"
 
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.realio-network/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.noisd/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.realio-network/config/app.toml
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.noisd/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.realio-network/config/app.toml
+\"$PRUNING_INTERVAL\"/" $HOME/.noisd/config/app.toml
 ```
 
 
 ### create service file and start node
 
 Create service file
-Create a `realio-networkd.service` file in the `/etc/systemd/system` folder with the following code. 
+Create a `noisd.service` file in the `/etc/systemd/system` folder with the following code. 
 You can change `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
-sudo tee /etc/systemd/system/realio-networkd.service > /dev/null << EOF
+sudo tee /etc/systemd/system/noisd.service > /dev/null << EOF
 [Unit]
-Description=realio-testnet node service
+Description=nolus node service
 After=network-online.target
 
 [Service]
@@ -144,8 +145,8 @@ ExecStart=$(which cosmovisor) run start
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.realio-network"
-Environment="DAEMON_NAME=realio-networkd"
+Environment="DAEMON_HOME=$HOME/.noisd"
+Environment="DAEMON_NAME=noisd"
 Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
@@ -153,18 +154,24 @@ WantedBy=multi-user.target
 EOF
 ```
 
+### Download Latest Snapshot
+```
+curl -L https://snapshots.indonode.net/nois/nois-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.noisd
+[[ -f $HOME/.noisd/data/upgrade-info.json ]] && cp $HOME/.noisd/data/upgrade-info.json $HOME/.noisd/cosmovisor/genesis/upgrade-info.json
+```
+
 - Enable Service and Start Node
 
 ```
 sudo systemctl daemon-reload
-sudo systemctl enable realio-networkd
-sudo systemctl restart realio-networkd
-sudo journalctl -fu realio-networkd -o cat
+sudo systemctl enable noisd
+sudo systemctl restart noisd
+sudo journalctl -fu noisd -o cat
 ```
 ### Create Validator
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/testnet/realio/cheat" target="_blank">
+<a href="https://www.indonode.net/mainnet/nois/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>

@@ -62,7 +62,7 @@ noisd tx staking create-validator \
 --from=wallet \
 --gas-adjustment=1.4 \
 --gas auto \
---gas-prices 0unois \
+--gas-prices 0.05unois \
 -y
 ```
 
@@ -78,14 +78,14 @@ noisd tx staking edit-validator \
 --from=<wallet> \
 --gas-adjustment="1.15" \
 --gas auto \
---gas-prices 0unois \
+--gas-prices 0.05unois \
 -y
 ```
 
 
 Unjail Validator
 ```
-noisd tx slashing unjail --from <wallet> --chain-id --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx slashing unjail --from <wallet> --chain-id --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 Check Jailed Reason
@@ -97,27 +97,27 @@ noisd query slashing signing-info $(noisd tendermint show-validator)
 
 Withdraw Rewards
 ```
-noisd tx distribution withdraw-all-rewards --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx distribution withdraw-all-rewards --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 Withdraw Rewards with Comission
 ```
-noisd tx distribution withdraw-rewards $(noisd keys show wallet --bech val -a) --commission --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx distribution withdraw-rewards $(noisd keys show wallet --bech val -a) --commission --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 Delegate Token to your own validator
 ```
-noisd tx staking delegate $(noisd keys show wallet --bech val -a) 1000000unois --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx staking delegate $(noisd keys show wallet --bech val -a) 1000000unois --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 Delegate Token to other validator
 ```
-noisd tx staking redelegate $(noisd keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000unois --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx staking redelegate $(noisd keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000unois --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 Unbond Token from your validator
 ```
-noisd tx staking unbond $(noisd keys show wallet --bech val -a) 1000000unois --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx staking unbond $(noisd keys show wallet --bech val -a) 1000000unois --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 Send Token to another wallet
@@ -131,7 +131,7 @@ Vote
 You can change the value of `yes` to `no`,`abstain`,`nowithveto`
 
 ```
-noisd tx gov vote 1 yes --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0unois -y
+noisd tx gov vote 1 yes --from wallet --chain-id nois-1 --gas-adjustment 1.4 --gas auto --gas-prices 0.05unois -y
 ```
 
 ### Other

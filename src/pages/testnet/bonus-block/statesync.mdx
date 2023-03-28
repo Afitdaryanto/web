@@ -42,7 +42,7 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 ```
 
 ```
-curl -o - -L https://snapshots.indonode.net/planq/wasm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.bonusblock/
+curl -o - -L https://snapshots.indonode.net/bonusblock/wasm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.bonusblock/
 ```
 systemctl restart bonus-blockd && journalctl -fu bonus-blockd -o cat
 ```

@@ -91,8 +91,8 @@ bonus-blockd init <YOUR_MONIKER> --chain-id blocktopia-01
 - Genesis and Addrbook
 
 ```
-curl https://bonusblock-testnet.alter.network/genesis? | jq '.result.genesis' > ~/.bonusblock/config/genesis.json
-curl -Ls https://raw.githubusercontent.com/elangrr/testnet_guide/main/services/addrbook/bonusblock/addrbook.json > $HOME/.bonusblock/config/addrbook.json
+curl -Ls https://snapshots.indonode.net/bonusblock/genesis.json > $HOME/.bonusblock/config/genesis.json
+curl -Ls https://snapshots.indonode.net/bonusblock/addrbook.json > $HOME/.bonusblock/config/addrbook.json
 ```
 
 
@@ -152,7 +152,7 @@ EOF
 
 ### Download Latest Snapshot
 ```
-curl -L https://bonusb-t.service.indonode.net/bonusb-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.bonusblock
+curl -L https://snapshots.indonode.net/bonusblock/bonusblock-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.bonusblock
 [[ -f $HOME/.bonusblock/data/upgrade-info.json ]] && cp $HOME/.bonusblock/data/upgrade-info.json $HOME/.bonusblock/cosmovisor/genesis/upgrade-info.json
 ```
 

@@ -152,7 +152,7 @@ EOF
 
 ### Download Latest Snapshot
 ```
-curl -L https://lumenx.service.indonode.net/lumenx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.lumenx
+curl -L https://snapshots.indonode.net/lumenx/lumenx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.lumenx
 [[ -f $HOME/.lumenx/data/upgrade-info.json ]] && cp $HOME/.lumenx/data/upgrade-info.json $HOME/.lumenx/cosmovisor/genesis/upgrade-info.json
 ```
 

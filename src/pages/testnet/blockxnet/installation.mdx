@@ -91,7 +91,13 @@ blockxd init <YOUR_MONIKER> --chain-id blockx_12345-2
 - Genesis
 
 ```
-curl -Ls https://raw.githubusercontent.com/defi-ventures/blockx-node-public-compiled/main/genesis.json > $HOME/.blockxd/config/genesis.json
+curl -Ls https://snapshots.indonode.net/blockx/genesis.json > $HOME/.blockxd/config/genesis.json
+```
+
+- Addrbook
+
+```
+curl -Ls https://snapshots.indonode.net/blockx/addrbook.json > $HOME/.blockxd/config/addrbook.json
 ```
 
 
@@ -145,7 +151,7 @@ EOF
 
 ### Download Latest Snapshot
 ```
-curl -L https://blockx-t.service.indonode.net/blockx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
+curl -L https://snapshots.indonode.net/blockx/blockx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
 [[ -f $HOME/.blockxd/data/upgrade-info.json ]] && cp $HOME/.blockxd/data/upgrade-info.json $HOME/.blockxd/cosmovisor/genesis/upgrade-info.json
 ```
 

@@ -9,6 +9,8 @@ version:
 
 Live Peers 
 
+Automatically adding Live peers to your config.toml file
 ```
-2dc5fe97136b4a1f549b8da676f958f757ee2d1a@rpc.8ball.indonode.net:22656
+PEERS="$(curl -sS https://rpc.8ball.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.8ball/config/config.toml
 ```

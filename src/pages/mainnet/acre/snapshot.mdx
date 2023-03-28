@@ -6,7 +6,7 @@ network: Mainnet
 chain: acre_9052-1
 version: v1.1.1
 ---
-- Update every 6 Hours
+- Updated Everyday at 12 Midnight
 
 ## Intruction
 
@@ -25,7 +25,7 @@ rm -rf $HOME/.acred/data
 ### download data
 
 ```
-curl -L https://acre.service.indonode.net/acre-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.acred
+curl -L https://snapshots.indonode.net/acre/acre-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.acred
 mv $HOME/.acred/priv_validator_state.json.backup $HOME/.acred/data/priv_validator_state.json
 ```
 

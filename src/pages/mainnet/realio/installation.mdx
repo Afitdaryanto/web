@@ -1,10 +1,10 @@
 ---
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
-network: Testnet
+network: Mainnet
 icon: realio
-chain: realionetwork_3300-1
-version: v0.8.0-rc2
+chain: realionetwork_3301-1
+version: v0.8.0-rc3
 ---
 
 ### Hardware requirements
@@ -29,7 +29,7 @@ We are gonna use GO Version 1.19.5
 If you already have GO installed you can skip this 
 
 ```
-ver="1.19.5"
+ver="1.20.2"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -47,7 +47,7 @@ cd $HOME
 rm -rf realio-network/
 git clone https://github.com/realiotech/realio-network.git
 cd realio-network/
-git checkout v0.8.0-rc2
+git checkout v0.8.0-rc3
 make build
 ```
 
@@ -77,8 +77,8 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ### Config app
 
 ```
-realio-networkd config chain-id realionetwork_3300-1
-realio-networkd config keyring-backend test
+realio-networkd config chain-id realionetwork_3301-1
+realio-networkd config keyring-backend file
 ```
 
 ### Initialize Node
@@ -86,7 +86,7 @@ realio-networkd config keyring-backend test
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3300-1
+realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3301-1
 ```
 
 ### Download Genesis file and addrbook
@@ -94,13 +94,13 @@ realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3300-1
 - Genesis
 
 ```
-curl -Ls https://snapshots.indonode.net/realio-t/genesis.json > $HOME/.realio-network/config/genesis.json
+curl -Ls https://snapshots.indonode.net/realio/genesis.json > $HOME/.realio-network/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-curl -Ls https://snapshots.indonode.net/realio-t/addrbook.json > $HOME/.realio-network/config/addrbook.json
+curl -Ls https://snapshots.indonode.net/realio/addrbook.json > $HOME/.realio-network/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
@@ -165,6 +165,6 @@ sudo journalctl -fu realio-networkd -o cat
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/testnet/realio/cheat" target="_blank">
+<a href="https://www.indonode.net/mainnet/realio/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>

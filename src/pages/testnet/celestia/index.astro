@@ -4,12 +4,12 @@ import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon';
 
-const name= 'celestia';
+const name= 'Celestia';
 const icon= 'celestia';
 const network= 'Testnet';
-const chain= 'mocha';
-const version= 'v0.11.1';
-const stake= 'https://explorer.indonode.net/';
+const chain= 'blockspacerace-0';
+const version= 'v0.12.1';
+const stake= '';
 const meta = {
 	title: SITE.title,
 	description: SITE.description,
@@ -18,19 +18,23 @@ const meta = {
 
 const items = [
 	{
-		title: 'Api',
+		title: 'Addrbook',
+		Link: 'https://indonode.net/testnet/celestia/addrbook',
+	},
+	{
+		title: 'API Endpoints',
 		Link: 'https://indonode.net/testnet/celestia/api',
 	},
 	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.dev/celestia',
+		Link: 'https://explorer.indonode.net/celestia-testnet/staking',
 	},
 	{
 		title: 'Genesis file',
 		Link: 'https://indonode.net/testnet/celestia/genesis',
 	},
 	{
-		title: 'gRPC',
+		title: 'gRPC Endpoints',
 		Link: 'https://indonode.net/testnet/celestia/grpc',
 	},
 	{
@@ -42,7 +46,7 @@ const items = [
 		Link: 'https://indonode.net/testnet/celestia/peers',
 	},
 	{
-		title: 'Rpc',
+		title: 'RPC Endpoints',
 		Link: 'https://indonode.net/testnet/celestia/rpc',
 	},
 	{
@@ -52,7 +56,11 @@ const items = [
 	{
 		title: 'Snapshot',
 		Link: 'https://indonode.net/testnet/celestia/snapshot',
-	},	
+	},
+	{
+		title: 'CLI Cheatsheet',
+		Link: 'https://indonode.net/testnet/celestia/cheat',
+	},		
 ]	
 ---
 

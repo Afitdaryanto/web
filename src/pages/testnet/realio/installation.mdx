@@ -3,8 +3,8 @@ layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
 network: Testnet
 icon: realio
-chain: realionetwork_3300-1
-version: v0.8.0-rc3
+chain: realionetwork_3300-2
+version: v0.8.0-rc4
 ---
 
 ### Hardware requirements
@@ -47,7 +47,7 @@ cd $HOME
 rm -rf realio-network/
 git clone https://github.com/realiotech/realio-network.git
 cd realio-network/
-git checkout v0.8.0-rc3
+git checkout v0.8.0-rc4
 make build
 ```
 
@@ -77,7 +77,7 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ### Config app
 
 ```
-realio-networkd config chain-id realionetwork_3300-1
+realio-networkd config chain-id realionetwork_3300-2
 realio-networkd config keyring-backend test
 ```
 
@@ -86,7 +86,7 @@ realio-networkd config keyring-backend test
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3300-1
+realio-networkd init <YOUR_MONIKER> --chain-id realionetwork_3300-2
 ```
 
 ### Download Genesis file and addrbook
@@ -106,8 +106,8 @@ curl -Ls https://snapshots.indonode.net/realio-t/addrbook.json > $HOME/.realio-n
 ### Configure Seeds and Peers
 
 ```
-SEEDS="b0db1d25f10e94c13ba5080268e3f8c58eea6b69@rpc.realio-t.nodexcapital.com:23156,ee23c6b2367c7df0d71a7def5540cda879a06dab@realio-testnet-seed.itrocket.net:23656"
-PEERS="ec2dbd6e5d25501c50fb8585b5678a7460ef11da@144.126.196.99:26656,5bd91f6e7e3bcaaddead32fd37d67458723fec73@159.223.132.183:26656"
+SEEDS=""
+PEERS="5bd91f6e7e3bcaaddead32fd37d67458723fec73@159.223.132.183:46656,eced2e7edfe6c530ccf319ca7c6ce0b72d1d5570@144.126.196.99:46656,39e84967c02c7c04a0dd4bd426d484a65373d158@206.189.49.63:46656"
 sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.realio-network/config/config.toml
 ```
 

@@ -25,7 +25,7 @@ LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.heigh
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=8246854d88bbba7acec7b4d86c9b418c90816f1f@rpc.lumenx.indonode.net:24656 
+PEERS=c9e90a5c627f373d7602d1797b90720b0257f6f0@rpc.lumenx.indonode.net:17656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.lumenx/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.lumenx/config/config.toml

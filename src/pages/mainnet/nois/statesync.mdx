@@ -24,7 +24,7 @@ LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.heigh
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=1c69bfe397bf62159ccd5074aaa4c7461d5a034a@rpc.nois.indonode.net:25656 
+PEERS=c9e90a5c627f373d7602d1797b90720b0257f6f0@rpc.nois.indonode.net:17656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.noisd/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.noisd/config/config.toml

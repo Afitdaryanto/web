@@ -25,7 +25,7 @@ LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.heigh
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=c64ca37b8ec8627a28d243d466f3928eb0d96137@rpc.decentr.indonode.net:17656 
+PEERS=7678919ce37d6a8dc24a81c20ca8856147455670@rpc.decentr.indonode.net:20656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.decentr/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.decentr/config/config.toml

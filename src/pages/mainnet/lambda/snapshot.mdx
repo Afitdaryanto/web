@@ -12,27 +12,26 @@ version: 1.0.0
 
 ### install lz4
 ```
-sudo apt install lz4 -y
+sudo apt install lz4 snapd -y
 ```
 
-### reset chain data
+### Instruction
 ```
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" ~/.lambdavm/config/config.toml
+
 sudo systemctl stop lambdavm
-cp $HOME/.lambdavm/data/priv_validator_state.json $HOME/.lambdavm/priv_validator_state.json.backup
-rm -rf $HOME/.lambdavm/data
-```
 
-### download data
+rm -rf ~/.lambdavm/data
 
-```
-curl -o - -L http://lambda.snapshot.stavr.tech:5016/lambda/lambda-snap.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.lambdavm --strip-components 2
-mv $HOME/.lambdavm/priv_validator_state.json.backup $HOME/.lambdavm/data/priv_validator_state.json
-wget -O $HOME/.lambdavm/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Lambda%20Network/addrbook.json"
-```
+lambdavm tendermint unsafe-reset-all --home ~/.lambdavm/
 
-### start node
+SNAP_NAME=$(curl -s https://snapshots.nodestake.top/lambda/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
 
-```
+curl -o - -L https://snapshots.nodestake.top/lambda/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.lambdavm
+
 sudo systemctl restart lambdavm
-sudo journalctl -fu lambdavm -o cat
+
+journalctl -f -u lambdavm
 ```
+
+credit to Nodestake

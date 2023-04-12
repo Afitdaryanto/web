@@ -10,5 +10,6 @@ version: v0.0.4
 Live Peers 
 
 ```
-a15ca4998882b74ed8311dd0f473381b4dcd3a79@rpc.point.indonode.net:21656
+PEERS="$(curl -sS https://rpc.point.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.pointd/config/config.toml
 ```

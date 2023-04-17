@@ -50,12 +50,6 @@ git checkout v1.1.1
 make build
 ```
 
-Verify that you've installed acred successfully
-
-```
-acred version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.acred/cosmovisor/genesis/bin
@@ -65,6 +59,12 @@ rm -rf build
 ```
 sudo ln -s $HOME/.acred/cosmovisor/genesis $HOME/.acred/cosmovisor/current
 sudo ln -s $HOME/.acred/cosmovisor/current/bin/acred /usr/local/bin/acred
+```
+
+Verify that you've installed acred successfully
+
+```
+acred version
 ```
 
 ### Install Cosmovisor
@@ -150,6 +150,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable acred
 ```
 
 ### Download Latest Snapshot
@@ -161,8 +163,6 @@ curl -L https://snapshots.indonode.net/acre/acre-snapshot.tar.lz4 | lz4 -dc - | 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable acred
 sudo systemctl restart acred
 sudo journalctl -fu acred -o cat
 ```

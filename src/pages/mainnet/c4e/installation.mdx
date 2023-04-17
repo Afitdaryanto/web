@@ -50,12 +50,6 @@ cd c4e-chain/
 make build
 ```
 
-Verify that you've installed c4ed successfully
-
-```
-c4ed version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.c4e-chain/cosmovisor/genesis/bin
@@ -65,6 +59,12 @@ rm -rf build
 ```
 sudo ln -s $HOME/.c4e-chain/cosmovisor/genesis $HOME/.c4e-chain/cosmovisor/current
 sudo ln -s $HOME/.c4e-chain/cosmovisor/current/bin/c4ed /usr/local/bin/c4ed
+```
+
+Verify that you've installed c4ed successfully
+
+```
+c4ed version
 ```
 
 ### Install Cosmovisor
@@ -153,6 +153,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable c4ed
 ```
 
 ### Download Latest Snapshot
@@ -164,8 +166,6 @@ curl -L https://c4e.service.indonode.net/c4e-snapshot.tar.lz4 | lz4 -dc - | tar 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable c4ed
 sudo systemctl restart c4ed
 sudo journalctl -fu c4ed -o cat
 ```

@@ -51,12 +51,6 @@ git checkout tags/v0.0.4
 make install
 ```
 
-Verify that you've installed pointd successfully
-
-```
-pointd version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.pointd/cosmovisor/genesis/bin
@@ -66,6 +60,12 @@ rm -rf build
 ```
 sudo ln -s $HOME/.pointd/cosmovisor/genesis $HOME/.pointd/cosmovisor/current
 sudo ln -s $HOME/.pointd/cosmovisor/current/bin/pointd /usr/local/bin/pointd
+```
+
+Verify that you've installed pointd successfully
+
+```
+pointd version
 ```
 
 ### Install Cosmovisor
@@ -151,13 +151,13 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable pointd
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable pointd
 sudo systemctl restart pointd
 sudo journalctl -fu pointd -o cat
 ```

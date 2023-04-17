@@ -51,12 +51,6 @@ git checkout v1.6.2
 make build
 ```
 
-Verify that you've installed decentrd successfully
-
-```
-decentrd version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.decentr/cosmovisor/genesis/bin
@@ -66,6 +60,12 @@ rm -rf build
 ```
 sudo ln -s $HOME/.decentr/cosmovisor/genesis $HOME/.decentr/cosmovisor/current
 sudo ln -s $HOME/.decentr/cosmovisor/current/bin/decentrd /usr/local/bin/decentrd
+```
+
+Verify that you've installed decentrd successfully
+
+```
+decentrd version
 ```
 
 ### Install Cosmovisor
@@ -154,6 +154,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable decentrd
 ```
 
 ### Download Latest Snapshot
@@ -165,8 +167,6 @@ curl -L https://snapshots.indonode.net/decentr/decentr-snapshot.tar.lz4 | lz4 -d
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable decentrd
 sudo systemctl restart decentrd
 sudo journalctl -fu decentrd -o cat
 ```

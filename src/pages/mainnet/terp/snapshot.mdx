@@ -1,10 +1,10 @@
 ---
 layout: '~/layouts/MarkdownLayout.astro'
 title: Snapshot
-network: Testnet
+network: Mainnet
 icon: terp
-chain: athena-4
-version: v0.4.0
+chain: morroco-1
+version: v1.0.0-stable
 ---
 ## Intruction
 Updated every 12 at Midnight
@@ -14,23 +14,16 @@ Updated every 12 at Midnight
 sudo apt install lz4 -y
 ```
 
-### Turn off Statesync
-```
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" ~/.terp/config/config.toml
-```
-
 ### Stop Planqd and Backup priv_validator_state.json
 ```
 sudo systemctl stop terpd
 cp $HOME/.terp/data/priv_validator_state.json $HOME/.terp/priv_validator_state.json.backup
 rm -rf $HOME/.terp/data
-terpd tendermint unsafe-reset-all --home ~/.terp/ --keep-addr-book
 ```
 
 ### Download Snapshot
 ```
-SNAP_NAME=$(curl -s https://ss-t.terp.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
-curl -o - -L https://ss-t.terp.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.terp
+curl -L https://snapshots.indonode.net/terp/terp-snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.terp
 mv $HOME/.terp/priv_validator_state.json.backup $HOME/.terp/data/priv_validator_state.json
 ```
 
@@ -39,5 +32,3 @@ mv $HOME/.terp/priv_validator_state.json.backup $HOME/.terp/data/priv_validator_
 ```
 sudo systemctl restart terpd && sudo journalctl -u terpd -f --no-hostname -o cat
 ```
-
-Credit to Nodestake

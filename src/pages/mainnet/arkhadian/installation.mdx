@@ -51,12 +51,6 @@ git checkout v2.0.0
 go install ./...
 ```
 
-Verify that you've installed arkhd successfully
-
-```
-arkhd version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.arkh/cosmovisor/genesis/bin
@@ -64,6 +58,13 @@ mkdir -p $HOME/.arkh/cosmovisor/genesis/bin
 sudo ln -s $HOME/go/bin/arkhd $HOME/.arkh/cosmovisor/genesis/bin/
 sudo ln -s $HOME/.arkh/cosmovisor/genesis $HOME/.arkh/cosmovisor/current
 ```
+
+Verify that you've installed arkhd successfully
+
+```
+arkhd version
+```
+
 
 ### Install Cosmovisor
 
@@ -140,6 +141,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable arkhd
 ```
 
 ### Download Latest Snapshot
@@ -151,8 +154,6 @@ curl -L https://arkhadian.service.indonode.net/arkhadian-snapshot.tar.lz4 | lz4 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable arkhd
 sudo systemctl restart arkhd
 sudo journalctl -fu arkhd -o cat
 ```

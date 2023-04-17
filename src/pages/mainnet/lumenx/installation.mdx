@@ -50,12 +50,6 @@ git checkout v1.4.0
 make build
 ```
 
-Verify that you've installed lumenxd successfully
-
-```
-lumenxd version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.lumenx/cosmovisor/genesis/bin
@@ -65,6 +59,12 @@ rm -rf build
 ```
 sudo ln -s $HOME/.lumenx/cosmovisor/genesis $HOME/.lumenx/cosmovisor/current
 sudo ln -s $HOME/.lumenx/cosmovisor/current/bin/lumenxd /usr/local/bin/lumenxd
+```
+
+Verify that you've installed lumenxd successfully
+
+```
+lumenxd version
 ```
 
 ### Install Cosmovisor
@@ -148,6 +148,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable lumenxd
 ```
 
 ### Download Latest Snapshot
@@ -159,8 +161,6 @@ curl -L https://snapshots.indonode.net/lumenx/lumenx-snapshot.tar.lz4 | lz4 -dc 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable lumenxd
 sudo systemctl restart lumenxd
 sudo journalctl -fu lumenxd -o cat
 ```

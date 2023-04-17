@@ -94,13 +94,13 @@ terpd init <YOUR_MONIKER> --chain-id athena-4
 - Genesis
 
 ```
-curl -Ls https://snapshots.indonode.net/terp-t/genesis.json > $HOME/.terp/config/genesis.json
+curl -Ls https://ss-t.terp.nodestake.top/genesis.json > $HOME/.terp/config/genesis.json 
 ```
 
 - Addrbook
 
 ```
-curl -Ls https://snapshots.indonode.net/terp-t/addrbook.json > $HOME/.terp/config/addrbook.json
+curl -Ls https://ss-t.terp.nodestake.top/addrbook.json > $HOME/.terp/config/addrbook.json 
 ```
 
 ### Configure Seeds and Peers
@@ -155,13 +155,19 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable terpd
+```
+
+### Download Snapshot
+```
+SNAP_NAME=$(curl -s https://ss-t.terp.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss-t.terp.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.terp
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable terpd
 sudo systemctl restart terpd
 sudo journalctl -fu terpd -o cat
 ```

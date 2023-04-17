@@ -18,13 +18,13 @@ This is the settings we use , you dont have to change anything
 systemctl stop terpd 
 terpd tendermint unsafe-reset-all --home $HOME/.terp --keep-addr-book
 
-STATE_SYNC_RPC="https://rpc.terp-t.indonode.net:443"
+STATE_SYNC_RPC="https://rpc-t.terp.nodestake.top:443"
 
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=55bae82da2c4ddb155cea0ded6943f0899ca6504@rpc.terp-t.indonode.net:41656 
+PEERS=42dfe4bc0cacb118fdb72d251c4b794eb1ea285c@rpc-t.terp.nodestake.top:26656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.terp/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.terp/config/config.toml
@@ -37,3 +37,4 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart terpd && journalctl -fu terpd -o cat
 ```
+Credit to Nodestake

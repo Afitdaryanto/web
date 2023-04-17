@@ -51,12 +51,6 @@ git checkout v0.8.0-rc4
 make build
 ```
 
-Verify that you've installed realio-networkd successfully
-
-```
-realio-networkd version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.realio-network/cosmovisor/genesis/bin
@@ -68,9 +62,14 @@ sudo ln -s $HOME/.realio-network/cosmovisor/genesis $HOME/.realio-network/cosmov
 sudo ln -s $HOME/.realio-network/cosmovisor/current/bin/realio-networkd /usr/local/bin/realio-networkd
 ```
 
-### Install Cosmovisor
+Verify that you've installed realio-networkd successfully
+
+```
+realio-networkd version
 ```
 
+### Install Cosmovisor
+```
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 
@@ -151,13 +150,19 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable realio-networkd
+```
+
+### Download Latest Snapshot
+```
+curl -L https://snapshots.indonode.net/realio/realio-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.realio-network
+[[ -f $HOME/.realio-network/data/upgrade-info.json ]] && cp $HOME/.realio-network/data/upgrade-info.json $HOME/.realio-network/cosmovisor/genesis/upgrade-info.json
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable realio-networkd
 sudo systemctl restart realio-networkd
 sudo journalctl -fu realio-networkd -o cat
 ```

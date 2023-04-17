@@ -43,17 +43,35 @@ go version
 ### Install binary
 
 ```
+cd $HOME
+rm -rf planq/
 git clone https://github.com/planq-network/planq.git
-cd planq
+cd planq/
 git fetch
 git checkout v1.0.5
-make install
+make build
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.planqd/cosmovisor/genesis/bin
+mv build/planqd $HOME/.planqd/cosmovisor/genesis/bin/
+rm -rf build
+
+
+sudo ln -s $HOME/.planqd/cosmovisor/genesis $HOME/.planqd/cosmovisor/current
+sudo ln -s $HOME/.planqd/cosmovisor/current/bin/planqd /usr/local/bin/planqd
 ```
 
 Verify that you've installed planq successfully
 
 ```
 planqd version
+```
+
+### Install Cosmovisor
+```
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 
 ### Config app
@@ -76,14 +94,13 @@ planqd init <YOUR_MONIKER> --chain-id planq_7070-2
 - Genesis
 
 ```
-wget https://raw.githubusercontent.com/planq-network/networks/main/mainnet/genesis.json
-mv genesis.json ~/.planqd/config/
+curl -Ls https://snapshots.indonode.net/planq/genesis.json > $HOME/.planqd/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-
+curl -Ls https://snapshots.indonode.net/planq/addrbook.json > $HOME/.planqd/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
@@ -99,7 +116,7 @@ sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persisten
 
 ```
 PRUNING="custom"
-PRUNING_KEEP_RECENT="1000"
+PRUNING_KEEP_RECENT="100"
 PRUNING_INTERVAL="19"
 
 sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.planqd/config/app.toml
@@ -128,28 +145,37 @@ Create a `planq.service` file in the `/etc/systemd/system` folder with the follo
 You can change `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
-sudo tee /etc/systemd/system/planqd.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/planqd.service > /dev/null << EOF
 [Unit]
-Description=planqd
+Description=planqd node service
 After=network-online.target
 
 [Service]
-User=root
-ExecStart=$(which planqd) start --home $HOME/.planqd
+User=$USER
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.planqd"
+Environment="DAEMON_NAME=planqd"
+Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
-```
-
-- Enable Service and Start Node
-
-```
 sudo systemctl daemon-reload
 sudo systemctl enable planqd
+```
+
+### Download Latest Snapshot
+```
+curl -L https://snapshots.indonode.net/planq/planq-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.planqd
+[[ -f $HOME/.planqd/data/upgrade-info.json ]] && cp $HOME/.planqd/data/upgrade-info.json $HOME/.planqd/cosmovisor/genesis/upgrade-info.json
+```
+
+- Start Node
+
+```
 sudo systemctl restart planqd
 sudo journalctl -fu planqd -o cat
 ```

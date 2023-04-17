@@ -51,12 +51,6 @@ git checkout v1.0.0
 make build
 ```
 
-Verify that you've installed noisd successfully
-
-```
-noisd version
-```
-
 ### Prepare Cosmovisor
 ```
 mkdir -p $HOME/.noisd/cosmovisor/genesis/bin
@@ -68,9 +62,14 @@ sudo ln -s $HOME/.noisd/cosmovisor/genesis $HOME/.noisd/cosmovisor/current
 sudo ln -s $HOME/.noisd/cosmovisor/current/bin/noisd /usr/local/bin/noisd
 ```
 
-### Install Cosmovisor
+Verify that you've installed noisd successfully
+
+```
+noisd version
 ```
 
+### Install Cosmovisor
+```
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ```
 
@@ -152,6 +151,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable noisd
 ```
 
 ### Download Latest Snapshot
@@ -163,8 +164,6 @@ curl -L https://snapshots.indonode.net/nois/nois-snapshot.tar.lz4 | lz4 -dc - | 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable noisd
 sudo systemctl restart noisd
 sudo journalctl -fu noisd -o cat
 ```

@@ -34,7 +34,14 @@ sed -i.bak -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
   $HOME/.realio-network/config/config.toml
 sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
   $HOME/.realio-network/config/config.toml
+```
+### Download WASM
+```
+curl -o - -L https://snapshots.indonode.net/terp/wasm.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.terp/
+```
 
+### Restart
+```
 systemctl restart realio-networkd && journalctl -fu realio-networkd -o cat
 ```
 

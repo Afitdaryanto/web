@@ -4,7 +4,7 @@ title: Installation Node
 network: Testnet
 icon: elys
 chain: elystestnet-1
-version: v0.2.3
+version: v0.3.1
 ---
 
 ### Hardware requirements
@@ -44,9 +44,12 @@ go version
 
 ```
 cd $HOME
-wget https://github.com/elys-network/elys/releases/download/v0.2.3/elys._v0.2.3_linux_amd64.tar.gz
-tar -xvf elys._v0.2.3_linux_amd64.tar.gz
-rm -rf elys._v0.2.3_linux_amd64.tar.gz
+rm -rf elys
+git clone https://github.com/elys-network/elys.git
+cd elys
+git checkout v0.3.1
+git tag -d latest
+make build
 ```
 
 ### Prepare Cosmovisor

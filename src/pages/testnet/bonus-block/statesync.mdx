@@ -46,3 +46,9 @@ curl -L https://ss-t.bonusblock.nodestake.top/wasm.tar.lz4 | lz4 -dc - | tar -xf
 ```
 systemctl restart bonus-blockd && journalctl -fu bonus-blockd -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.bonusblock/config/config.toml
+systemctl restart bonus-blockd && journalctl -fu bonus-blockd -o cat
+```

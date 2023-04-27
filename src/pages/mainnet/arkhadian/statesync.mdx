@@ -59,3 +59,9 @@ sudo systemctl restart arkhd
 journalctl -u arkhd -f -o cat
 ```
 Credit to Nodestake
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.arkh/config/config.toml
+systemctl restart arkhd && journalctl -fu arkhd -o cat
+```

@@ -38,3 +38,9 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart c4ed && journalctl -fu c4ed -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.c4e-chain/config/config.toml
+systemctl restart c4ed && journalctl -fu c4ed -o cat
+```

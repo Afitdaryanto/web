@@ -38,3 +38,9 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart lumenxd && journalctl -fu lumenxd -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.lumenx/config/config.toml
+systemctl restart lumenxd && journalctl -fu lumenxd -o cat
+```

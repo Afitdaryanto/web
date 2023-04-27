@@ -32,3 +32,9 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.humans/co
 
 sudo systemctl restart humansd && sudo journalctl -fu humansd -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.humans/config/config.toml
+systemctl restart humansd && journalctl -fu humansd -o cat
+```

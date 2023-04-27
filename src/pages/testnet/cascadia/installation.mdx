@@ -2,9 +2,9 @@
 layout: '~/layouts/MarkdownLayout.astro'
 title: Installation Node
 network: Testnet
-icon: elys
-chain: elystestnet-1
-version: v0.4.0
+icon: cascadia
+chain: cascadia_6102-1
+version: v0.1.1
 ---
 
 ### Hardware requirements
@@ -44,29 +44,28 @@ go version
 
 ```
 cd $HOME
-rm -rf elys
-git clone https://github.com/elys-network/elys.git
-cd elys
-git checkout v0.3.1
-git tag -d latest
+rm -rf cascadia
+git clone https://github.com/CascadiaFoundation/cascadia.git
+cd cascadia
+git checkout v0.1.1
 make build
 ```
 
 ### Prepare Cosmovisor
 ```
-mkdir -p $HOME/.elys/cosmovisor/genesis/bin
-mv elysd $HOME/.elys/cosmovisor/genesis/bin/
+mkdir -p $HOME/.cascadiad/cosmovisor/genesis/bin
+mv cascadiad $HOME/.cascadiad/cosmovisor/genesis/bin/
 
 
 
-sudo ln -s $HOME/.elys/cosmovisor/genesis $HOME/.elys/cosmovisor/current
-sudo ln -s $HOME/.elys/cosmovisor/current/bin/elysd /usr/local/bin/elysd
+sudo ln -s $HOME/.cascadiad/cosmovisor/genesis $HOME/.cascadiad/cosmovisor/current
+sudo ln -s $HOME/.cascadiad/cosmovisor/current/bin/cascadiad /usr/local/bin/cascadiad
 ```
 
-Verify that you've installed elysd successfully
+Verify that you've installed cascadiad successfully
 
 ```
-elysd version
+cascadiad version
 ```
 
 ### Install Cosmovisor
@@ -77,8 +76,8 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 ### Config app
 
 ```
-elysd config chain-id elystestnet-1
-elysd config keyring-backend test
+cascadiad config chain-id cascadia_6102-1
+cascadiad config keyring-backend test
 ```
 
 ### Initialize Node
@@ -86,7 +85,7 @@ elysd config keyring-backend test
 Please change `<YOUR_MONIKER>` To your own Moniker.
 
 ```
-elysd init <YOUR_MONIKER> --chain-id elystestnet-1
+cascadiad init <YOUR_MONIKER> --chain-id cascadia_6102-1
 ```
 
 ### Download Genesis file and addrbook
@@ -94,21 +93,26 @@ elysd init <YOUR_MONIKER> --chain-id elystestnet-1
 - Genesis
 
 ```
-curl -Ls https://snapshots.indonode.net/elys-t/genesis.json > $HOME/.elys/config/genesis.json
+curl -Ls https://snapshots.indonode.net/cascadia-t/genesis.json > $HOME/.cascadiad/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-curl -Ls https://snapshots.indonode.net/elys-t/addrbook.json > $HOME/.elys/config/addrbook.json
+curl -Ls https://snapshots.indonode.net/cascadia-t/addrbook.json > $HOME/.cascadiad/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
 
 ```
-PEERS="$(curl -sS https://rpc.elys-t.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.elys/config/config.toml
-sed -i 's/seeds = ""/seeds = "ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@testnet-seeds.polkachu.com:22056"/' ~/.elys/config/config.toml
+PEERS="$(curl -sS https://rpc.cascadiad-t.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.cascadiad/config/config.toml
+```
+
+### Set Minimum Gas Prices
+
+```
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"7aCC\"|" $HOME/.cascadiad/config/app.toml
 ```
 
 ### config pruning
@@ -118,24 +122,24 @@ PRUNING="custom"
 PRUNING_KEEP_RECENT="100"
 PRUNING_INTERVAL="19"
 
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.elys/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.cascadiad/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.elys/config/app.toml
+\"$PRUNING_KEEP_RECENT\"/" $HOME/.cascadiad/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.elys/config/app.toml
+\"$PRUNING_INTERVAL\"/" $HOME/.cascadiad/config/app.toml
 ```
 
 
 ### create service file and start node
 
 Create service file
-Create a `elysd.service` file in the `/etc/systemd/system` folder with the following code. 
+Create a `cascadiad.service` file in the `/etc/systemd/system` folder with the following code. 
 You can change `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
-sudo tee /etc/systemd/system/elysd.service > /dev/null << EOF
+sudo tee /etc/systemd/system/cascadiad.service > /dev/null << EOF
 [Unit]
-Description=elys-tesnet node service
+Description=cascadia-tesnet node service
 After=network-online.target
 
 [Service]
@@ -144,33 +148,33 @@ ExecStart=$(which cosmovisor) run start
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.elys"
-Environment="DAEMON_NAME=elysd"
+Environment="DAEMON_HOME=$HOME/.cascadiad"
+Environment="DAEMON_NAME=cascadiad"
 Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
-sudo systemctl enable elysd
+sudo systemctl enable cascadiad
 ```
 
 ### Download Latest Snapshot
 ```
-curl -L https://snapshots.indonode.net/elys-t/elys-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.elys
-[[ -f $HOME/.elys/data/upgrade-info.json ]] && cp $HOME/.elys/data/upgrade-info.json $HOME/.elys/cosmovisor/genesis/upgrade-info.json
+curl -L https://snapshots.indonode.net/cascadia-t/cascadia-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.cascadiad
+[[ -f $HOME/.cascadiad/data/upgrade-info.json ]] && cp $HOME/.cascadiad/data/upgrade-info.json $HOME/.cascadiad/cosmovisor/genesis/upgrade-info.json
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl restart elysd
-sudo journalctl -fu elysd -o cat
+sudo systemctl restart cascadiad
+sudo journalctl -fu cascadiad -o cat
 ```
 ### Create Validator
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/testnet/elys/cheat" target="_blank">
+<a href="https://www.indonode.net/testnet/cascadia/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>

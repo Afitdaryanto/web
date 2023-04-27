@@ -38,3 +38,9 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart pointd && journalctl -fu pointd -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.pointd/config/config.toml
+systemctl restart pointd && journalctl -fu pointd -o cat
+```

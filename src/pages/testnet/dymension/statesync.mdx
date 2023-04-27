@@ -37,3 +37,9 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart dymd && journalctl -fu dymd -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.dymension/config/config.toml
+systemctl restart dymd && journalctl -fu dymd -o cat
+```

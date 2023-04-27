@@ -40,3 +40,9 @@ mv $HOME/.gitopia/priv_validator_state.json.backup $HOME/.gitopia/data/priv_vali
 ```
 sudo systemctl start gitopiad && sudo journalctl -u gitopiad -f --no-hostname -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.gitopia/config/config.toml
+systemctl restart gitopiad && journalctl -fu gitopiad -o cat
+```

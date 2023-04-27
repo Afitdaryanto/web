@@ -38,3 +38,9 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart 8ball && journalctl -fu 8ball -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.8ball/config/config.toml
+systemctl restart 8ball && journalctl -fu 8ball -o cat
+```

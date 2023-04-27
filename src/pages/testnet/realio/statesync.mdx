@@ -37,3 +37,9 @@ sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
 
 systemctl restart realio-networkd && journalctl -fu realio-networkd -o cat
 ```
+
+### Turn Off State-sync
+```
+sed -i.bak -e "s|^enable *=.*|enable = false|" $HOME/.realio-network/config/config.toml
+systemctl restart realio-networkd && journalctl -fu realio-networkd -o cat
+```

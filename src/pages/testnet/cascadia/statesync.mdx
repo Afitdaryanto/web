@@ -24,7 +24,7 @@ LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.heigh
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-PEERS=15263a87a09f90ba71d35cbddf17ff5178e9b133@rpc.cascadia-t.indonode.net:43656 
+PEERS=ca229d8dc311901eccb08fe36c095c0365fa7c1d@rpc.cascadia-t.indonode.net:43656 
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.cascadiad/config/config.toml
 
 sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.cascadiad/config/config.toml

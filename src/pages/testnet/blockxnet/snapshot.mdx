@@ -23,7 +23,7 @@ rm -rf $HOME/.blockxd/data
 
 ### Download Snapshot
 ```
-curl -L https://snapshots.indonode.net/blockx/blockx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
+curl -L https://snapshots.indonode.net/blockx-t/blockx-t-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
 mv $HOME/.blockxd/priv_validator_state.json.backup $HOME/.blockxd/data/priv_validator_state.json
 ```
 

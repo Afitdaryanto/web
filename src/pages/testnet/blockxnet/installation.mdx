@@ -44,25 +44,25 @@ go version
 
 ```
 cd $HOME
-curl -LO https://github.com/defi-ventures/blockx-node-public-compiled/releases/download/v9.0.0/blockxd
+curl -LO https://snapshots.indonode.net/blockx-t/blockxd
 chmod +x blockxd
+```
+
+### Prepare Cosmovisor
+```
+mkdir -p $HOME/.blockxd/cosmovisor/genesis/bin
+mv blockxd $HOME/.blockxd/cosmovisor/genesis/bin/
+rm -rf build
+
+
+sudo ln -s $HOME/.blockxd/cosmovisor/genesis $HOME/.blockxd/cosmovisor/current
+sudo ln -s $HOME/.blockxd/cosmovisor/current/bin/blockxd /usr/local/bin/blockxd
 ```
 
 Verify that you've installed blockxd successfully
 
 ```
 blockxd version
-```
-
-### Prepare Cosmovisor
-```
-mkdir -p $HOME/.blockxd/cosmovisor/genesis/bin
-mv build/blockxd $HOME/.blockxd/cosmovisor/genesis/bin/
-rm -rf build
-
-
-sudo ln -s $HOME/.blockxd/cosmovisor/genesis $HOME/.blockxd/cosmovisor/current
-sudo ln -s $HOME/.blockxd/cosmovisor/current/bin/blockxd /usr/local/bin/blockxd
 ```
 
 ### Install Cosmovisor
@@ -91,13 +91,13 @@ blockxd init <YOUR_MONIKER> --chain-id blockx_12345-2
 - Genesis
 
 ```
-curl -Ls https://snapshots.indonode.net/blockx/genesis.json > $HOME/.blockxd/config/genesis.json
+curl -Ls https://snapshots.indonode.net/blockx-t/genesis.json > $HOME/.blockxd/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-curl -Ls https://snapshots.indonode.net/blockx/addrbook.json > $HOME/.blockxd/config/addrbook.json
+curl -Ls https://snapshots.indonode.net/blockx-t/addrbook.json > $HOME/.blockxd/config/addrbook.json
 ```
 
 
@@ -147,19 +147,19 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable blockxd
 ```
 
 ### Download Latest Snapshot
 ```
-curl -L https://snapshots.indonode.net/blockx/blockx-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
+curl -L https://snapshots.indonode.net/blockx-t/blockx-t-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
 [[ -f $HOME/.blockxd/data/upgrade-info.json ]] && cp $HOME/.blockxd/data/upgrade-info.json $HOME/.blockxd/cosmovisor/genesis/upgrade-info.json
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable blockxd
 sudo systemctl restart blockxd
 sudo journalctl -fu blockxd -o cat
 ```

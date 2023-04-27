@@ -4,7 +4,11 @@ title: Installation Node
 network: Testnet
 icon: elys
 chain: elystestnet-1
+<<<<<<< HEAD
+version: v0.4.0
+=======
 version: v0.3.1
+>>>>>>> 28a2f0c34e5316eabaadf3e003cbbe2cbdcb7643
 ---
 
 ### Hardware requirements
@@ -153,13 +157,13 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable elysd
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable elysd
 sudo systemctl restart elysd
 sudo journalctl -fu elysd -o cat
 ```

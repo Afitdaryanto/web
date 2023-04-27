@@ -151,13 +151,13 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable realio-networkd
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable realio-networkd
 sudo systemctl restart realio-networkd
 sudo journalctl -fu realio-networkd -o cat
 ```

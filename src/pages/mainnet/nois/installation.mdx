@@ -161,7 +161,7 @@ curl -L https://snapshots.indonode.net/nois/nois-snapshot.tar.lz4 | lz4 -dc - | 
 [[ -f $HOME/.noisd/data/upgrade-info.json ]] && cp $HOME/.noisd/data/upgrade-info.json $HOME/.noisd/cosmovisor/genesis/upgrade-info.json
 ```
 
-- Enable Service and Start Node
+- Start Node
 
 ```
 sudo systemctl restart noisd

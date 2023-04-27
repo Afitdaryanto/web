@@ -94,14 +94,13 @@ pointd init <YOUR_MONIKER> --chain-id point_10687-1
 - Genesis
 
 ```
-wget https://raw.githubusercontent.com/pointnetwork/point-chain-config/main/mainnet-1/genesis.json
-mv config.toml genesis.json ~/.pointd/config/
+curl -Ls https://snapshots.indonode.net/point/genesis.json > $HOME/.pointd/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-SOON
+curl -Ls https://snapshots.indonode.net/point/addrbook.json > $HOME/.pointd/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
@@ -153,6 +152,15 @@ WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
 sudo systemctl enable pointd
+<<<<<<< HEAD
+```
+
+### Download Latest Snapshot
+```
+curl -L https://snapshots.indonode.net/point/point-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.pointd
+[[ -f $HOME/.pointd/data/upgrade-info.json ]] && cp $HOME/.pointd/data/upgrade-info.json $HOME/.pointd/cosmovisor/genesis/upgrade-info.json
+=======
+>>>>>>> 28a2f0c34e5316eabaadf3e003cbbe2cbdcb7643
 ```
 
 - Enable Service and Start Node

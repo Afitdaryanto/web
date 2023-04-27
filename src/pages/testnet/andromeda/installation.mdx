@@ -93,7 +93,13 @@ andromedad init <YOUR_MONIKER> --chain-id galileo-3
 - Genesis
 
 ```
-curl -Ls https://raw.githubusercontent.com/andromedaprotocol/testnets/galileo-3/genesis.json > $HOME/.andromedad/config/genesis.json
+curl -Ls https://snapshots.indonode.net/andromeda-t/genesis.json > $HOME/.andromedad/config/genesis.json
+```
+
+- Addrbook
+
+```
+curl -Ls https://snapshots.indonode.net/andromeda-t/addrbook.json > $HOME/.andromedad/config/addrbook.json
 ```
 
 
@@ -143,13 +149,13 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
-```
-
-- Enable Service and Start Node
-
-```
 sudo systemctl daemon-reload
 sudo systemctl enable andromedad
+```
+
+- Start Node
+
+```
 sudo systemctl restart andromedad
 sudo journalctl -fu andromedad -o cat
 ```

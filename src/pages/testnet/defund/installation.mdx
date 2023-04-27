@@ -94,13 +94,13 @@ defundd init <YOUR_MONIKER> --chain-id orbit-alpha-1
 - Genesis
 
 ```
-curl -Ls https://snapshots.indonode.net/defund/genesis.json > $HOME/.defund/config/genesis.json
+curl -Ls https://snapshots.indonode.net/defund-t/genesis.json > $HOME/.defund/config/genesis.json
 ```
 
 - Addrbook
 
 ```
-curl -Ls https://snapshots.indonode.net/defund/addrbook.json > $HOME/.defund/config/addrbook.json
+curl -Ls https://snapshots.indonode.net/defund-t/addrbook.json > $HOME/.defund/config/addrbook.json
 ```
 
 ### Configure Seeds and Peers
@@ -149,13 +149,19 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl daemon-reload
+sudo systemctl enable defundd
+```
+
+### Download Latest Snapshot
+```
+curl -L https://snapshots.indonode.net/defund-t/defund-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.defund
+[[ -f $HOME/.defund/data/upgrade-info.json ]] && cp $HOME/.defund/data/upgrade-info.json $HOME/.defund/cosmovisor/genesis/upgrade-info.json
 ```
 
 - Enable Service and Start Node
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl enable defundd
 sudo systemctl restart defundd
 sudo journalctl -fu defundd -o cat
 ```

@@ -20,7 +20,7 @@ cp $HOME/.bcna/data/priv_validator_state.json $HOME/.bcna/priv_validator_state.j
 bcnad tendermint unsafe-reset-all --home $HOME/.bcna
 
 STATE_SYNC_RPC=https://rpc.bitcanna.indonode.net:443
-STATE_SYNC_PEER=9d8f4def69c13050f97990757b938343a53da0f5@grpc.bitcanna.indonode.net:27656
+STATE_SYNC_PEER=9d8f4def69c13050f97990757b938343a53da0f5@rpc.bitcanna.indonode.net:27656
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)

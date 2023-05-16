@@ -110,6 +110,11 @@ PEERS="$(curl -sS https://rpc.bitcanna.indonode.net/net_info | jq -r '.result.pe
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.bcna/config/config.toml
 ```
 
+### Configure Gas Prices
+```
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.1ubcna\"|" $HOME/.bcna/config/app.toml
+```
+
 ### config pruning
 
 ```

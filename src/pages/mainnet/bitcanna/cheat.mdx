@@ -76,16 +76,16 @@ bcnad tx staking edit-validator \
 --chain-id bitcanna-1 \
 --commission-rate=0.05 \
 --from=<wallet> \
---gas-adjustment="1.15" \
+--gas-adjustment 1.5 \
 --gas="auto" \
---gas-prices="0ubcna" \
+--gas-prices 0.1ubcna \
 -y
 ```
 
 
 Unjail Validator
 ```
-bcnad tx slashing unjail --from <wallet> --chain-id --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx slashing unjail --from <wallet> --chain-id --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 Check Jailed Reason
@@ -97,27 +97,27 @@ bcnad query slashing signing-info $(bcnad tendermint show-validator)
 
 Withdraw Rewards
 ```
-bcnad tx distribution withdraw-all-rewards --from wallet --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx distribution withdraw-all-rewards --from wallet --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 Withdraw Rewards with Comission
 ```
-bcnad tx distribution withdraw-rewards $(bcnad keys show wallet --bech val -a) --commission --from wallet --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx distribution withdraw-rewards $(bcnad keys show wallet --bech val -a) --commission --from wallet --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 Delegate Token to your own validator
 ```
-bcnad tx staking delegate $(bcnad keys show wallet --bech val -a) 1000000ubcna --from wallet --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx staking delegate $(bcnad keys show wallet --bech val -a) 1000000ubcna --from wallet --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 Delegate Token to other validator
 ```
-bcnad tx staking redelegate $(bcnad keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000ubcna --from wallet --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx staking redelegate $(bcnad keys show wallet --bech val -a) <TO_VALOPER_ADDRESS> 1000000ubcna --from wallet --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 Unbond Token from your validator
 ```
-bcnad tx staking unbond $(bcnad keys show wallet --bech val -a) 1000000ubcna --from wallet --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx staking unbond $(bcnad keys show wallet --bech val -a) 1000000ubcna --from wallet --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 Send Token to another wallet
@@ -131,7 +131,7 @@ Vote
 You can change the value of `yes` to `no`,`abstain`,`nowithveto`
 
 ```
-bcnad tx gov vote 1 yes --from wallet --chain-id bitcanna-1 --gas-adjustment 1.4 --gas="auto" --gas-prices="0ubcna" -y
+bcnad tx gov vote 1 yes --from wallet --chain-id bitcanna-1 --gas-adjustment 1.5 --gas="auto" --gas-prices 0.1ubcna -y
 ```
 
 ### Other

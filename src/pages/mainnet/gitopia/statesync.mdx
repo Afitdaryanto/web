@@ -20,7 +20,7 @@ cp $HOME/.gitopia/data/priv_validator_state.json $HOME/.gitopia/priv_validator_s
 gitopiad tendermint unsafe-reset-all --home $HOME/.gitopia
 
 STATE_SYNC_RPC=https://rpc.gitopia.indonode.net:443
-STATE_SYNC_PEER=4cf66531681c92f15c95c25bd1bff524f9dca35e@grpc.gitopia.indonode.net:26656
+STATE_SYNC_PEER=fdf51e3445ef8b3b28c313d98c65516b8faf3317@rpc.gitopia.indonode.net:26656
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
 SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)

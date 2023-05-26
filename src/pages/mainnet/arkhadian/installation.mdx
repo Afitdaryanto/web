@@ -24,10 +24,6 @@ sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang p
 ```
 
 ### Install go
-
-We are gonna use GO Version 1.19.5
-If you already have GO installed you can skip this 
-
 ```
 ver="1.19.5"
 cd $HOME
@@ -51,48 +47,19 @@ git checkout v2.0.0
 go install ./...
 ```
 
-### Prepare Cosmovisor
+### Initialize Node
 ```
-mkdir -p $HOME/.arkh/cosmovisor/genesis/bin
-
-sudo ln -s $HOME/go/bin/arkhd $HOME/.arkh/cosmovisor/genesis/bin/
-sudo ln -s $HOME/.arkh/cosmovisor/genesis $HOME/.arkh/cosmovisor/current
-```
-
-Verify that you've installed arkhd successfully
-
-```
-arkhd version
-```
-
-
-### Install Cosmovisor
-
-```
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
-```
-
-### Config app
-
-```
+arkhd init <MONIKER> --chain-id arkh
 arkhd config chain-id arkh
 arkhd config keyring-backend file
 ```
-
-### Initialize Node
-
-Please change `<YOUR_MONIKER>` To your own Moniker.
-
-```
-arkhd init <YOUR_MONIKER> --chain-id arkh
-```
-
-### Download Genesis file and addrbook
-
-- Genesis
-
+### Genesis
 ```
 curl -Ls https://raw.githubusercontent.com/vincadian/arkh-blockchain/master/genesis/genesis.json > $HOME/.arkh/config/genesis.json
+```
+### Addrbook
+```
+wget -O $HOME/.arkh/config/addrbook.json "https://raw.githubusercontent.com/sychonix/Mainnet/main/Arkh/addrbook.json"
 ```
 
 ### Configure Seeds and Peers
@@ -117,10 +84,6 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
 
 
 ### create service file and start node
-
-Create service file
-Create a `arkhd.service` file in the `/etc/systemd/system` folder with the following code. 
-You can change `USER` with your Linux user name. You need sudo previlege to do this step.
 
 ```
 sudo tee /etc/systemd/system/arkhd.service > /dev/null << EOF
@@ -162,6 +125,6 @@ sudo journalctl -fu arkhd -o cat
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/mainnet/arkhadian/cheat" target="_blank">
+<a href="https://service.sychonix.me/mainnet/arkhadian/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>

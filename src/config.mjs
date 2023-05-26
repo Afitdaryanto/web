@@ -1,13 +1,13 @@
-import defaultImage from './assets/images/indonode.png';
+import defaultImage from './assets/images/sychonixx.png';
 
 const CONFIG = {
-  name: 'indonode',
+  name: 'sychonix',
 
-  origin: 'https://indonode.net/',
+  origin: 'https://service.sychonix.me/',
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'Indonode - Highly Secured Staking Provider',
+  title: 'sychonix - Highly Secured Staking Provider',
   description:
     'Validator & Node Operator Cosmos Networks',
   defaultImage: defaultImage,

@@ -7,29 +7,17 @@ chain: constantine-3
 version: v0.5.2
 ---
 
-### Hardware requirements
+# Archway | Chain ID : constantine-3 | Version v0.5.2
 
-The following requirements are recommended
-
-- 4 or more physical CPU cores
-- At least 200GB of SSD disk storage
-- At least 8GB of memory (RAM)
-- At least 100mbps network bandwidth
-
-
-### Install dependencies Required
-
+### Install dependencies
 ```
-sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
 
-### Install go
-
-We are gonna use GO Version 1.19.9
-If you already have GO installed you can skip this 
-
+### Install Go
 ```
-ver="1.19.9"
+ver="1.20.2"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -40,141 +28,98 @@ source ~/.bash_profile
 go version
 ```
 
-### Install binary
-
+### Build Binary
 ```
 cd $HOME
-rm -rf archway
 git clone https://github.com/archway-network/archway.git
 cd archway
 git checkout v0.5.2
-make build
+make install
 ```
 
-### Prepare Cosmovisor
-```
-mkdir -p $HOME/.archway/cosmovisor/genesis/bin
-mv build/archwayd $HOME/.archway/cosmovisor/genesis/bin/
-rm -rf build
-
-
-sudo ln -s $HOME/.archway/cosmovisor/genesis $HOME/.archway/cosmovisor/current
-sudo ln -s $HOME/.archway/cosmovisor/current/bin/archwayd /usr/local/bin/archwayd
-```
-
-Verify that you've installed archwayd successfully
+### Initialize the node
 
 ```
-archwayd version
-```
-
-### Install Cosmovisor
-```
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
-```
-
-### Config app
-
-```
+archwayd init $MONIKER --chain-id constantine-3
 archwayd config chain-id constantine-3
 archwayd config keyring-backend test
 ```
-
-### Initialize Node
-
-Please change `<YOUR_MONIKER>` To your own Moniker.
-
 ```
-archwayd init <YOUR_MONIKER> --chain-id constantine-3
+archwayd config node tcp://localhost:26657
 ```
 
-### Download Genesis file and addrbook
-
-- Genesis
-
+### Custom Port ( Optional)
 ```
-curl -Ls https://snapshots.indonode.net/archway-t/genesis.json > $HOME/.archway/config/genesis.json
+PORT=34
+archwayd config node tcp://localhost:${PORT}657
 ```
-
-- Addrbook
-
 ```
-curl -Ls https://snapshots.indonode.net/archway-t/addrbook.json > $HOME/.archway/config/addrbook.json
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/.archway/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${PORT}546\"%" $HOME/.archway/config/app.toml
 ```
 
-### Configure Seeds and Peers
-
+### Genesis
 ```
-PEERS="$(curl -sS https://rpc.archway-t.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.archway/config/config.toml
+curl -Ls https://snapshots.kjnodes.com/archway-testnet/genesis.json > $HOME/.archway/config/genesis.json
 ```
 
-### Set Minimum Gas Prices
-
+### Addrbook
 ```
-sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0aconst\"|" $HOME/.archway/config/app.toml
-```
-
-### config pruning
-
-```
-PRUNING="custom"
-PRUNING_KEEP_RECENT="100"
-PRUNING_INTERVAL="19"
-
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.archway/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.archway/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.archway/config/app.toml
+curl -Ls https://snapshots.kjnodes.com/archway-testnet/addrbook.json > $HOME/.archway/config/addrbook.json
 ```
 
-
-### create service file and start node
-
-Create service file
-Create a `archwayd.service` file in the `/etc/systemd/system` folder with the following code. 
-You can change `USER` with your Linux user name. You need sudo previlege to do this step.
-
+### Seed & Peer
 ```
-sudo tee /etc/systemd/system/archwayd.service > /dev/null << EOF
+SEEDS="3c5bc400c786d8e57ae2b85639273d1aec79829a@34.31.130.235:26656"
+sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/.archway/config/config.toml
+peers="b2d39b9b7991c0a9a7678994f5afe04a1b3df923@34.122.164.239:26656,930bf53d3858340d52bb7e541617740d91477ff0@335.239.130.141:26656,434015482b70fff4e6bc96299dee7b84aca01343@35.223.36.227:26656"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.archway/config/config.toml
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0uconst\"|" $HOME/.archway/config/app.toml
+```
+
+### Prunning
+```
+sed -i \
+-e 's|^pruning *=.*|pruning = "custom"|' \
+-e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
+-e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
+-e 's|^pruning-interval *=.*|pruning-interval = "19"|' \
+$HOME/.archway/config/app.toml
+```
+### Indexer Off (optional)
+```
+sed -i 's|^indexer *=.*|indexer = "null"|' $HOME/.archway/config/config.toml
+```
+### Service
+```
+sudo tee /etc/systemd/system/archwayd.service << EOF
 [Unit]
-Description=archway-tesnet node service
+Description=archway-testnet
 After=network-online.target
-
+#
 [Service]
 User=$USER
-ExecStart=$(which cosmovisor) run start
+ExecStart=$(which archwayd) start
+RestartSec=3
 Restart=on-failure
-RestartSec=10
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.archway"
-Environment="DAEMON_NAME=archwayd"
-Environment="UNSAFE_SKIP_BACKUP=true"
-
+#
 [Install]
 WantedBy=multi-user.target
 EOF
+```
+
+### Start
+```
 sudo systemctl daemon-reload
 sudo systemctl enable archwayd
-```
-
-### Download Latest Snapshot
-```
-curl -L https://snapshots.indonode.net/archway-t/archway-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.archway
-[[ -f $HOME/.archway/data/upgrade-info.json ]] && cp $HOME/.archway/data/upgrade-info.json $HOME/.archway/cosmovisor/genesis/upgrade-info.json
-```
-
-- Enable Service and Start Node
-
-```
 sudo systemctl restart archwayd
-sudo journalctl -fu archwayd -o cat
+sudo journalctl -u archwayd -f -o cat
 ```
 ### Create Validator
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/testnet/archway/cheat" target="_blank">
+<a href="https://service.sychonix.me/testnet/archway/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>
